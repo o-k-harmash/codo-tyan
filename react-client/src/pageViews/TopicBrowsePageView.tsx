@@ -45,17 +45,20 @@ export default function TopicBrowsePageView() {
       </details>
 
       {/* Topics list section */}
-      <ul className="flex w-full max-w-2xl flex-col gap-4 mt-4">
+      <ul
+        className="flex w-full max-w-2xl flex-col gap-(--space-md)
+          mt-(--space-md)"
+      >
         {items.map((item) => (
           <li
             key={item.id}
-            className="flex flex-col gap-4 rounded-md border border-gray-300
-              p-4"
+            className="flex flex-col gap-(--space-md) rounded-md border
+              border-gray-300 p-(--space-md)"
           >
             <h3>{item.title}</h3>
 
             {/* Display tags for each topic */}
-            <div className="flex flex-wrap gap-1">
+            <div className="flex flex-wrap gap-(--space-sm)">
               {item.tags.map((t) => (
                 <span key={t} className="tag">
                   {t}
