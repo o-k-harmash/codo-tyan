@@ -106,7 +106,7 @@ export default function LayoutPageView() {
   return (
     <>
       {/* Navbar */}
-      <nav className="h-14 border-b border-gray-300 py-2">
+      <nav className="h-14 border-b border-gray-300 py-(--space-sm)">
         <div className="container-sm flex items-center justify-between">
           {logo}
 
@@ -121,11 +121,11 @@ export default function LayoutPageView() {
       </main>
 
       {/* Join Section */}
-      <section className="mt-8 bg-(--bg-secondary) py-28">
+      <section className="mt-(--space-md) bg-(--bg-secondary) py-24">
         <div className="flex flex-col items-center">
           <h1>{vm.join.title}</h1>
-          <p className="mt-4 text-center">{vm.join.about}</p>
-          <div className="mt-6 flex gap-4">
+          <p className="mt-(--space-md) text-center">{vm.join.about}</p>
+          <div className="mt-(--space-md) flex gap-(--space-md)">
             <a className="btn btn--outlined">{vm.join.more}</a>
             <a className="btn btn--filled">{vm.join.now}</a>
           </div>
@@ -133,12 +133,12 @@ export default function LayoutPageView() {
       </section>
 
       {/* Footer */}
-      <footer className="mt-8 py-8">
-        <div className="container-sm flex flex-col gap-8">
-          <div className="flex flex-col gap-4">
+      <footer className="mt-(--space-lg) py-(--space-lg)">
+        <div className="container-sm flex flex-col gap-(--space-lg)">
+          <div className="flex flex-col gap-(--space-lg)">
             {logo}
             <p className="text-gray-600">{vm.footer.contacts.description}</p>
-            <ul className="flex gap-8">
+            <ul className="flex gap-(--space-md)">
               {vm.footer.contacts.links.map((l, i) => (
                 <li key={i}>
                   <a href={l.href}>
@@ -152,7 +152,7 @@ export default function LayoutPageView() {
           {vm.footer.navigation.map((n, i) => (
             <div key={i}>
               <h5>{n.heading}</h5>
-              <ul className="mt-4 flex flex-col gap-4">
+              <ul className="mt-(--space-md) flex flex-col gap-(--space-md)">
                 {n.links.map((l, j) => (
                   <li key={j}>
                     <a href={l.href} className="text-gray-500">
@@ -182,7 +182,7 @@ export default function LayoutPageView() {
 
           {logo}
 
-          <ul className="py-4">
+          <ul className="py-(--space-sm)">
             {vm.navbar.navigation.map((n, i) => (
               <li key={i}>
                 <a className="nav__item" href={n.href}>
@@ -194,7 +194,7 @@ export default function LayoutPageView() {
 
           <hr className="text-gray-300" />
 
-          <div className="flex flex-col pt-4">
+          <div className="flex flex-col pt-(--space-sm)">
             <button className="nav__item">
               <Phone /> {vm.overlay.signIn}
             </button>

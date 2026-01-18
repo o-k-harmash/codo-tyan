@@ -33,6 +33,11 @@
   --tag-bg-selected: var(--color-gray-800);
   --tag-bg-primary: var(--color-gray-200);
   --tag-fg-primary: var(--color-gray-700);
+
+  /* Spacing (single source of truth) */
+  --space-sm: calc(var(--spacing) * 2);  /* 8px  – tight UI */
+  --space-md: calc(var(--spacing) * 4);    /* 16px – default */
+  --space-lg: calc(var(--spacing) * 6);  /* 24px – sections / panels */
 }
 
 @utility container-* {
@@ -55,7 +60,7 @@
   }
 
   p {
-    line-height: calc(var(--spacing) * 7);
+    line-height: var(--space-lg);
   }
 
   svg {
@@ -183,7 +188,7 @@
     width: 20rem;
     min-height: 100vh;
     background: var(--bg-primary);
-    padding: calc(var(--spacing) / 2) var(--spacing);
+    padding: var(--space-sm) var(--space-md);
     transform: translateX(-125%);
     transition: transform 250ms ease;
     transition-delay: 50ms;
@@ -196,9 +201,9 @@
 
   .nav__item {
     display: flex;
-    padding: calc(var(--spacing) * 2);
-    gap: calc(var(--spacing) * 4);
     align-items: center;
+    gap: var(--space-sm);
+    padding: var(--space-sm);
     color: var(--color-gray-500);
     cursor: pointer;
   }
@@ -226,27 +231,27 @@
   .btn--filled {
     background-color: var(--btn-bg-filled);
     color: var(--btn-fg-filled);
-    padding: calc(var(--spacing) * 3) calc(var(--spacing) * 6);
+    padding: var(--space-md) var(--space-lg);
   }
 
   .btn--outlined {
     background-color: var(--bg-primary);
     color: var(--btn-fg-outlined);
     border: 1px solid var(--color-gray-300);
-    padding: calc(var(--spacing) * 3) calc(var(--spacing) * 6);
+    padding: var(--space-md) var(--space-lg);
   }
 
   .btn--ghost {
     background: transparent;
     color: var(--btn-fg-ghost);
-    padding: calc(var(--spacing) * 2);
+    padding: var(--space-sm);
   }
 
   .tag {
     border-radius: var(--radius-sm);
     color: var(--tag-fg-primary);
     background-color: var(--tag-bg-primary);
-    padding: var(--spacing) calc(var(--spacing) * 3);
+    padding: var(--space-sm) var(--space-md);
   }
 
   .tag[data-selected="true"] {

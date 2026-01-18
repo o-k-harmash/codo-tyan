@@ -21,7 +21,7 @@ export default function ErrorPageView() {
 
         <p className="mt-4">{vm.description}</p>
 
-        <div className="mt-8 flex gap-4">
+        <div className="mt-(--space-lg) flex gap-(--space-md)">
           <Link to="/" className="btn btn--filled">
             {vm.actions.primary}
           </Link>
