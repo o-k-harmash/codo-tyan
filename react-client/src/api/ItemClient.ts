@@ -3,14 +3,18 @@ import type { Res } from "./Res"
 import type { TagList } from "./TagList"
 
 export default {
+  // eslint-disable-next-line
   get(limit: number, offset: number, tags: TagList): Promise<Res<ItemRes>> {
-    const params = new URLSearchParams({
-      limit: String(limit),
-      offset: String(offset),
-    })
-
-    tags.forEach((tag) => params.append("tag", tag))
-
+    /**TODO: something as
+     * const params = new URLSearchParams({
+     *   limit: String(limit),
+     *   offset: String(offset),
+     * })
+     * tags.forEach((tag) => params.append("tag", tag))
+     * httpClient<ItemRes>({
+     *   url: `${settings.protocol}/${settings.domain}/${settings.prefix}`,
+     * })
+     */
     return Promise.resolve({
       status: "ok",
       data: {

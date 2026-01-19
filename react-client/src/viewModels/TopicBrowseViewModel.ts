@@ -8,14 +8,14 @@ import type { Tag } from "./Tag"
 import ItemClient from "@/api/ItemClient"
 import TagClient from "@/api/TagClient"
 import type { TagList } from "./TagList"
+import type { TopicBrowseSourceOfTruth } from "./TopicBrowseSourceOfTruth"
 
 export default function useTopicBrowseViewModel(): TopicBrowse &
   ITopicBrowseViewModel {
   const state = aggregate.use()
 
   useEffect(() => {
-    const { selectedTags, limit, offset } = state
-    updateFormDataProcess(selectedTags, limit, offset)
+    updateFormDataProcess(state)
   }, [])
 
   return {
@@ -25,21 +25,19 @@ export default function useTopicBrowseViewModel(): TopicBrowse &
   }
 }
 
-export async function updateTag(tag: Tag) {
-  const snapshot = aggregate.updateSelectionAndGetSnapshot(tag)
-  updateFormDataProcess(snapshot.selectedTags, snapshot.limit, snapshot.offset)
+export function updateTag(tag: Tag) {
+  updateFormDataProcess(aggregate.computeNextStateWithToggledTag(tag))
 }
 
-export async function updateOffset(offset: number) {
-  const snapshot = aggregate.updateOffsetAndGetSnapshot(offset)
-  updateFormDataProcess(snapshot.selectedTags, snapshot.limit, snapshot.offset)
+export function updateOffset(offset: number) {
+  updateFormDataProcess(aggregate.computeNextStateWithChangedOffset(offset))
 }
 
-export async function updateFormDataProcess(
-  selectedTags: TagList,
-  limit: number,
-  offset: number,
-) {
+export async function updateFormDataProcess({
+  selectedTags,
+  limit,
+  offset,
+}: TopicBrowseSourceOfTruth) {
   aggregate.status = Aggregare.LOADING
 
   let tags: TagList = aggregate.get().tags

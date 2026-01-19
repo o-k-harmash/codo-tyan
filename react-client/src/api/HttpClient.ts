@@ -6,7 +6,7 @@ export default async function httpClient<T, E = Error>(
 ): Promise<Res<T, E>> {
   const { url, body, headers = {}, options = {} } = req
 
-  const method = body ? "POST" : "GET"
+  const method = headers.method ?? (body ? "POST" : "GET")
 
   const fetchOptions: RequestInit = {
     method,
@@ -35,7 +35,11 @@ export default async function httpClient<T, E = Error>(
       data: (await response.json()) as T,
     }
   } catch (err) {
-    if (err instanceof DOMException && err.name === "AbortError") {
+    /**TODO:
+     * - test it when api will be connected with server
+     * - e.name === "TimeoutError" considering to implement handler
+     */
+    if (err instanceof Error && err.name === "AbortError") {
       return {
         status: "abort",
       }

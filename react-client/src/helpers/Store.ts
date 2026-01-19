@@ -20,7 +20,9 @@ export class Store<T> {
     this.listeners.forEach((l) => l())
   }
 
-  /** Подписаться на изменения состояния */
+  /** Подписаться на изменения состояния
+   * TODO: All listeners are notified synchronously. For large listener sets, consider batching updates or using a microtask queue.
+   */
   subscribe(listener: Listener): () => void {
     this.listeners.add(listener)
     // Возвращаем функцию отписки

@@ -29,7 +29,7 @@ export class TopicBrowseAggregateRoot extends Store<TopicBrowse> {
     }))
   }
 
-  updateSelectionAndGetSnapshot(tag: Tag): TopicBrowse {
+  computeNextStateWithToggledTag(tag: Tag): TopicBrowseSourceOfTruth {
     const state = this.get()
     return {
       ...state,
@@ -40,7 +40,7 @@ export class TopicBrowseAggregateRoot extends Store<TopicBrowse> {
     }
   }
 
-  updateOffsetAndGetSnapshot(offset: number): TopicBrowse {
+  computeNextStateWithChangedOffset(offset: number): TopicBrowseSourceOfTruth {
     return {
       ...this.get(),
       offset,

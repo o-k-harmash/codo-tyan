@@ -58,25 +58,25 @@ describe("TopicBrowsePresentation", () => {
   })
 
   it("adds a tag if not present", () => {
-    const snapshot = store.updateSelectionAndGetSnapshot("React")
+    const snapshot = store.computeNextStateWithToggledTag("React")
     expect(snapshot.selectedTags).toEqual(["JS", "TS", "React"])
   })
 
   it("removes a tag if present", () => {
-    const snapshot = store.updateSelectionAndGetSnapshot("TS")
+    const snapshot = store.computeNextStateWithToggledTag("TS")
     expect(snapshot.selectedTags).toEqual(["JS"])
   })
 
   it("does not mutate original array", () => {
     const snapshot = store.get()
     const copy = [...snapshot.selectedTags]
-    store.updateSelectionAndGetSnapshot("React")
+    store.computeNextStateWithToggledTag("React")
     expect(snapshot.selectedTags).toEqual(copy)
   })
 
   it("drop offset after toggling tag", () => {
     const snapshot = store.get()
-    store.updateSelectionAndGetSnapshot("React")
+    store.computeNextStateWithToggledTag("React")
     expect(snapshot.offset).toEqual(0)
   })
 })

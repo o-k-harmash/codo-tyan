@@ -4,7 +4,7 @@ import GlyphLeft from "@/assets/glyph__left.svg?react"
 import GlyphRight from "@/assets/glyph__right.svg?react"
 import { TopicBrowseAggregateRoot as Presentation } from "@/viewModels/TopicBrowseAggregateRoot"
 
-function Spiner({ visible }: { visible: boolean }) {
+function Spinner({ visible }: { visible: boolean }) {
   return (
     <div data-visible={visible} className="page-loader">
       <div className="page-loader__spinner"></div>
@@ -17,12 +17,12 @@ export default function TopicBrowsePageView() {
     useTopicBrowseViewModel()
 
   if (status === "idle") {
-    return <Spiner visible={true}></Spiner>
+    return <Spinner visible={true}></Spinner>
   }
 
   return (
     <>
-      <Spiner visible={status === Presentation.LOADING}></Spiner>
+      <Spinner visible={status === Presentation.LOADING}></Spinner>
 
       {/* Tags filter section */}
       <details className="filters">
@@ -72,6 +72,7 @@ export default function TopicBrowsePageView() {
       </ul>
 
       {/* Pagination / info section */}
+      {/**TODO: pagination logic */}
       <div className="pagination">
         <button className="pagination__arrow">
           <GlyphLeft></GlyphLeft>
