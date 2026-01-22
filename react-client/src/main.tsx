@@ -5,7 +5,7 @@ import { RouterProvider } from "react-router/dom"
 import "./style.css"
 import LayoutPageView from "./Layout"
 import ErrorPageView from "./Error"
-import TopicBrowsePageView from "./pageViews/TopicBrowsePageView"
+import ItemsPage from "./features/items/ItemsPage"
 
 const router = createBrowserRouter([
   {
@@ -14,7 +14,7 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: <TopicBrowsePageView></TopicBrowsePageView>,
+        element: <ItemsPage></ItemsPage>,
       },
     ],
   },

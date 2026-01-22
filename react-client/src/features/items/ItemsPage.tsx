@@ -1,8 +1,7 @@
 import Filter from "@/assets/filter.svg?react"
-import useTopicBrowseViewModel from "@/viewModels/TopicBrowseViewModel"
 import GlyphLeft from "@/assets/glyph__left.svg?react"
 import GlyphRight from "@/assets/glyph__right.svg?react"
-import { TopicBrowseAggregateRoot as Presentation } from "@/viewModels/TopicBrowseAggregateRoot"
+import useItemsPage from "./useItemsPage"
 
 function Spinner({ visible }: { visible: boolean }) {
   return (
@@ -12,9 +11,9 @@ function Spinner({ visible }: { visible: boolean }) {
   )
 }
 
-export default function TopicBrowsePageView() {
-  const { tags, items, status, offset, selectedTags, updateTag, updateOffset } =
-    useTopicBrowseViewModel()
+export default function ItemsPage() {
+  const { status, items, form, pagination, toggleTag, changePage } =
+    useItemsPage()
 
   if (status === "idle") {
     return <Spinner visible={true}></Spinner>
@@ -22,7 +21,7 @@ export default function TopicBrowsePageView() {
 
   return (
     <>
-      <Spinner visible={status === Presentation.LOADING}></Spinner>
+      <Spinner visible={status === "loading"}></Spinner>
 
       {/* Tags filter section */}
       <details className="filters">
@@ -31,14 +30,14 @@ export default function TopicBrowsePageView() {
         </summary>
 
         <div className="filters__content">
-          {tags.map((id) => (
+          {form.selectedTags.map((t) => (
             <button
-              key={id}
-              data-selected={selectedTags.includes(id)}
-              onClick={() => updateTag(id)}
+              key={t.id}
+              data-selected={t.isSelected}
+              onClick={() => toggleTag(t.id)}
               className="tag"
             >
-              {id}
+              {t.id}
             </button>
           ))}
         </div>
@@ -82,8 +81,8 @@ export default function TopicBrowsePageView() {
           {Array.from({ length: 5 }, (_, id) => (
             <li key={id}>
               <button
-                disabled={offset === id}
-                onClick={() => updateOffset(id)}
+                disabled={pagination.offset === id}
+                onClick={() => changePage(id)}
                 className="pagination__item"
               >
                 {id + 1}
