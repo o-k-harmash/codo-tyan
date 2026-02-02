@@ -2,8 +2,9 @@ import { Pagination } from "@/components/Pagination"
 import { Spinner } from "@/components/Spinner"
 import { Tags } from "@/components/Tags"
 import { apiGetArticles } from "@/services/api/articles"
-import type { Article } from "@/types/article"
+import type { ArticlePreview } from "@/types/article"
 import { useEffect, useReducer, useState } from "react"
+import { Link } from "react-router"
 
 const toggleTag = (state: Set<string>, tag: string) => {
   const next = new Set(state)
@@ -16,7 +17,7 @@ const toggleTag = (state: Set<string>, tag: string) => {
 }
 
 export default function Home() {
-  const [articles, setArticles] = useState<Article[] | null>(null)
+  const [articles, setArticles] = useState<ArticlePreview[] | null>(null)
   const [totalPages, setTotalPages] = useState(0)
   const [articlesPageLimit] = useState(15)
   const [page, setPage] = useState(1)
@@ -72,23 +73,24 @@ export default function Home() {
           mt-(--space-md)"
       >
         {articles.map((article) => (
-          <div
-            key={article.id}
-            className="flex flex-col gap-(--space-md) rounded-md border
-              border-gray-300 p-(--space-md)"
-          >
-            <span className="heading-3">{article.title}</span>
+          <Link to={`/articles/${article.id}`} key={article.id}>
+            <div
+              className="flex flex-col gap-(--space-md) rounded-md border
+                border-gray-300 p-(--space-md)"
+            >
+              <span className="heading-3">{article.title}</span>
 
-            <div className="flex flex-wrap gap-(--space-sm)">
-              {article.tags.map((t) => (
-                <span key={t} className="tag">
-                  {t}
-                </span>
-              ))}
+              <div className="flex flex-wrap gap-(--space-sm)">
+                {article.tags.map((t) => (
+                  <span key={t} className="tag">
+                    {t}
+                  </span>
+                ))}
+              </div>
+
+              <p className="text-justify">{article.description}</p>
             </div>
-
-            <p className="text-justify">{article.description}</p>
-          </div>
+          </Link>
         ))}
       </div>
 

@@ -1,6 +1,8 @@
-import type { Article } from "./article"
+import type { Article, ArticlePreview } from "./article"
 
 export interface ArticlesResponse {
-  articles: Article[]
+  articles: ArticlePreview[]
   totalPages: number
 }
+
+export type ArticleResponse = Article

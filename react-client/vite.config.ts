@@ -4,8 +4,14 @@ import svgr from "vite-plugin-svgr"
 import tailwindcss from "@tailwindcss/vite"
 import path from "path"
 
-// https://vite.dev/config/
 export default defineConfig({
+  server: {
+    /**
+     * Listening in local network for testing on different devices
+     */
+    host: true,
+    port: 5173,
+  },
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
