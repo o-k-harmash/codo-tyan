@@ -4,17 +4,28 @@ import type { ArticleResponse } from "@/types/response"
 import { useEffect, useLayoutEffect, useRef, useState } from "react"
 import { useParams } from "react-router"
 import hljs from "highlight.js"
+import type { AppError } from "@/utils/appError"
+
+type ArticleRouteParams = {
+  articleId: string
+}
 
 export default function Article() {
-  const params = useParams()
+  const { articleId } = useParams() as ArticleRouteParams
+
   const proseRef = useRef<HTMLDivElement | null>(null)
 
-  const [article, setArticle] = useState<ArticleResponse>()
+  const [article, setArticle] = useState<ArticleResponse | null>()
+  const [error, setError] = useState<AppError | null>()
 
   useEffect(() => {
-    const getArticle = async () => {
-      const article = await apiGetArticle(params.articleId)
-      setArticle(article)
+    async function getArticle() {
+      try {
+        const article = await apiGetArticle(articleId)
+        setArticle(article)
+      } catch (error) {
+        setError(error as AppError)
+      }
     }
 
     getArticle()
@@ -32,11 +43,16 @@ export default function Article() {
     })
   }, [article])
 
-  if (!article) {
-    return <Spinner dataVisible={true}></Spinner>
+  if (error) {
+    switch (error.type) {
+      default:
+        throw error
+    }
   }
 
-  return (
+  return !article ? (
+    <Spinner dataVisible={true}></Spinner>
+  ) : (
     <>
       <header className="mt-(--space-lg) py-(--space-lg)">
         <h1>{article.title}</h1>

@@ -1,11 +1,17 @@
+import errors from "@/utils/appError"
 import { apiService, handleError } from "."
 
 export async function apiGetTags(): Promise<string[]> {
   try {
-    const response = await apiService.get("tags")
-    return response.json()
-  } catch (err) {
+    const res = await apiService.get("tags")
+
+    if (!res.ok) {
+      throw errors.serverError(res.status)
+    }
+
+    return res.json()
+  } catch (error) {
     // return ["TS", "Web"]
-    throw handleError(err, "error while fetching tags")
+    throw handleError(error)
   }
 }

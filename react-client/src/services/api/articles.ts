@@ -1,5 +1,6 @@
 import type { ArticleResponse, ArticlesResponse } from "@/types/response"
 import { apiService, handleError } from "."
+import errors from "@/utils/appError"
 
 export async function apiGetArticles(
   page: number,
@@ -17,9 +18,14 @@ export async function apiGetArticles(
      * it is include return status to the ui and handle it for user
      * example of different reasones see: https://web.dev/articles/fetch-api-error-handling?hl=ru#when_the_network_status_code_represents_an_error
      */
-    const response = await apiService.get("articles", params)
-    return response.json()
-  } catch (err) {
+    const res = await apiService.get("articles", params)
+
+    if (!res.ok) {
+      throw errors.serverError(res.status)
+    }
+
+    return res.json()
+  } catch (error) {
     // return {
     //   totalPages: 55,
     //   articles: [
@@ -67,26 +73,26 @@ export async function apiGetArticles(
     //     },
     //   ],
     // }
-    throw handleError(err, "error while fetching articles")
+    throw handleError(error)
   }
 }
 
 export async function apiGetArticle(
-  articleId?: string,
+  articleId: string,
 ): Promise<ArticleResponse> {
   try {
-    if (articleId === undefined) {
-      throw new Response("Not Found", { status: 404 })
+    const res = await apiService.get(`articles/${articleId}`)
+
+    if (!res.ok) {
+      throw errors.serverError(res.status)
     }
 
-    const response = await apiService.get(`articles/${articleId}`)
-    return response.json()
-  } catch (err) {
-    //     return {
-    //       id: "dahsdlk131390qdalsdja12313eqpweqdladsada",
-    //       title: "React Basics",
-    //       subtitle: "React cource",
-    //       rawContent: `<h2>React Basics: Полный пример</h2>
+    return res.json()
+  } catch (error) {
+    // return {
+    //   id: "dahsdlk131390qdalsdja12313eqpweqdladsada",
+    //   title: "React Basics",
+    //   rawContent: `<h2>React Basics: Полный пример</h2>
 
     // <p>React — это библиотека для создания UI. Она позволяет строить компоненты и управлять состоянием приложения.</p>
 
@@ -205,7 +211,7 @@ export async function apiGetArticle(
     // <h4>Заключение</h4>
     // <p>Этот пример демонстрирует почти все элементы, которые можно встретить в статье Markdown: заголовки, списки, вложенные списки, изображения разного соотношения сторон, цитаты и блоки кода.</p>
     // `,
-    //     }
-    throw handleError(err, "error while fetching articles")
+    // }
+    throw handleError(error)
   }
 }

@@ -3,6 +3,7 @@ import { Spinner } from "@/components/Spinner"
 import { Tags } from "@/components/Tags"
 import { apiGetArticles } from "@/services/api/articles"
 import type { ArticlePreview } from "@/types/article"
+import type { AppError } from "@/utils/appError"
 import { useEffect, useReducer, useState } from "react"
 import { Link } from "react-router"
 
@@ -26,6 +27,7 @@ export default function Home() {
     new Set<string>(),
   )
   const [isLoading, setIsLoading] = useState(true)
+  const [error, setError] = useState<AppError | null>()
 
   /**
    * TODO: AbortController implementation, maby consider tags change debounce
@@ -38,26 +40,35 @@ export default function Home() {
    * Recommendation: Add debouncing for tag changes (not page changes, as those should be immediate).
    */
   useEffect(() => {
-    const getArticles = async () => {
+    async function getArticles() {
       setIsLoading(true)
-      const { articles, totalPages } = await apiGetArticles(
-        page,
-        articlesPageLimit,
-        selectedTags,
-      )
-      setArticles(articles)
-      setTotalPages(totalPages)
+      try {
+        const { articles, totalPages } = await apiGetArticles(
+          page,
+          articlesPageLimit,
+          selectedTags,
+        )
+        setArticles(articles)
+        setTotalPages(totalPages)
+      } catch (error) {
+        setError(error as AppError)
+      }
       setIsLoading(false)
     }
 
     getArticles()
   }, [selectedTags, page, articlesPageLimit])
 
-  if (articles === null) {
-    return <Spinner dataVisible={true}></Spinner>
+  if (error) {
+    switch (error.type) {
+      default:
+        throw error
+    }
   }
 
-  return (
+  return !articles ? (
+    <Spinner dataVisible={true}></Spinner>
+  ) : (
     <>
       <Tags
         onLoading={setIsLoading}
