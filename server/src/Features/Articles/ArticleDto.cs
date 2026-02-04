@@ -1,0 +1,1 @@
+public record ArticleDto(string id, string title, string description, string[] tags);
