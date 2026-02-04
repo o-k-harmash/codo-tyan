@@ -10,13 +10,15 @@ import { Navbar } from "./components/Navbar"
 import { Join } from "./components/Join"
 import { Footer } from "./components/Footer"
 import Article from "./pages/Article"
+import About from "./pages/About"
+import SupportAndCommunity from "./pages/SupportAndCommunity"
 
 const router = createBrowserRouter([
   {
     element: (
       <>
         <Navbar />
-        <main className="container-sm">
+        <main className="container-sm mt-(--space-lg)">
           <Outlet />
         </main>
         <Join />
@@ -29,6 +31,9 @@ const router = createBrowserRouter([
         path: "/",
         element: <Home />,
       },
+      { path: "/about", element: <About /> },
+      { path: "/support", element: <SupportAndCommunity /> },
+      { path: "/community", element: <SupportAndCommunity /> },
       {
         path: "/articles/:articleId",
         element: <Article />,
