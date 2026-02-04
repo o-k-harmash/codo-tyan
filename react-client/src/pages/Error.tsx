@@ -5,7 +5,7 @@ import {
   useNavigate,
 } from "react-router"
 
-const vm = {
+const errorVM = {
   500: {
     code: "500",
     title: "Oooops, something wrong!",
@@ -26,7 +26,7 @@ const vm = {
 export default function Error() {
   const nav = useNavigate()
   const err = useRouteError()
-  const res = isRouteErrorResponse(err) ? vm[404] : vm[500]
+  const res = isRouteErrorResponse(err) ? errorVM[404] : errorVM[500]
 
   return (
     <main className="container-sm min-h-screen flex items-center justify-center">
@@ -39,11 +39,11 @@ export default function Error() {
 
         <div className="mt-(--space-lg) flex gap-(--space-md)">
           <Link to="/" className="btn btn--filled">
-            {vm.actions.primary}
+            {errorVM.actions.primary}
           </Link>
 
           <button className="btn btn--outlined" onClick={() => nav(-1)}>
-            {vm.actions.secondary}
+            {errorVM.actions.secondary}
           </button>
         </div>
       </section>

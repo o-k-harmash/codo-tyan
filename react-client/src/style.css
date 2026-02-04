@@ -210,6 +210,14 @@
     cursor: pointer;
   }
 
+  .nav__item[data-current="true"] {
+    background-color: var(--color-gray-100);
+  }
+
+  .nav__item:hover {
+    background-color: var(--color-gray-50);
+  }
+
   .nav__item-svg,
   .nav__item svg {
     color: var(--color-gray-400);
@@ -262,7 +270,6 @@
   }
 
   .filters {
-    margin-top: var(--space-md);
     display: flex;
     flex-direction: column;
   }
@@ -345,6 +352,7 @@
   }
 
   .prose {
+    font-size: var(--text-base);
     display: flex;
     flex-direction: column;
   }
@@ -444,5 +452,15 @@
 
   .prose pre code::-webkit-scrollbar-thumb:hover {
     background-color: rgba(255, 255, 255, 40%);
+  }
+
+  .prose a {
+    font-weight: 600;
+    color: blue;
+    text-decoration: underline;
+  }
+
+  .prose a:visited {
+    color: plum;
   }
 }

@@ -4,8 +4,9 @@ import Important from "@/assets/important.svg?react"
 import Filter from "@/assets/filter.svg?react"
 import { Link } from "react-router"
 import { Logo } from "./Logo"
+import { navigationVM } from "."
 
-const vm = {
+const footerVM = {
   contacts: {
     description:
       "High quality coding education maintained by an open source community.",
@@ -19,12 +20,7 @@ const vm = {
   navigation: [
     {
       heading: "Pages",
-      links: [
-        { label: "About", href: "/about" },
-        { label: "Team", href: "/team" },
-        { label: "Blog", href: "/blog" },
-        { label: "Success Stories", href: "/stories" },
-      ],
+      links: navigationVM,
     },
     {
       heading: "SEO",
@@ -39,6 +35,8 @@ const vm = {
 }
 
 export function Footer() {
+  const { contacts, navigation } = footerVM
+
   return (
     <footer
       className="mt-(--space-lg) py-(--space-lg)"
@@ -48,9 +46,9 @@ export function Footer() {
       <div className="container-sm flex flex-col gap-(--space-lg)">
         <div className="flex flex-col gap-(--space-lg)">
           <Logo />
-          <p className="text-gray-600">{vm.contacts.description}</p>
+          <p className="text-gray-600">{contacts.description}</p>
           <div className="flex gap-(--space-lg)">
-            {vm.contacts.links.map((l, k) => (
+            {contacts.links.map((l, k) => (
               <Link key={k} to={l.href}>
                 <l.icon className="text-gray-600" />
               </Link>
@@ -58,7 +56,7 @@ export function Footer() {
           </div>
         </div>
 
-        {vm.navigation.map((n, k) => (
+        {navigation.map((n, k) => (
           <div key={k}>
             <h5>{n.heading}</h5>
             <ul className="mt-(--space-md) flex flex-col gap-(--space-md)">

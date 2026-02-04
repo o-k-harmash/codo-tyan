@@ -7,7 +7,7 @@ import type { AppError } from "@/utils/appError"
 import { useEffect, useReducer, useState } from "react"
 import { Link } from "react-router"
 
-const toggleTag = (state: Set<string>, tag: string) => {
+const TOOGLE_TAG = (state: Set<string>, tag: string) => {
   const next = new Set(state)
   if (next.has(tag)) {
     next.delete(tag)
@@ -23,7 +23,7 @@ export default function Home() {
   const [articlesPageLimit] = useState(15)
   const [page, setPage] = useState(1)
   const [selectedTags, setSelectedTags] = useReducer(
-    toggleTag,
+    TOOGLE_TAG,
     new Set<string>(),
   )
   const [isLoading, setIsLoading] = useState(true)

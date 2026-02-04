@@ -2,30 +2,23 @@ import { Link } from "react-router"
 import { Logo } from "./Logo"
 import GridDots from "@/assets/grid_dots.svg?react"
 import Exit from "@/assets/exit.svg?react"
-import Home from "@/assets/home.svg?react"
-import Heart from "@/assets/heart.svg?react"
-import Note from "@/assets/note.svg?react"
-import Comment from "@/assets/comment.svg?react"
-import Important from "@/assets/important.svg?react"
-import { useReducer } from "react"
+import { useEffect, useState } from "react"
 import { Overlay } from "./Overlay"
-
-const vm = {
-  navigation: [
-    { icon: Home, label: "Home", href: "/home" },
-    { icon: Note, label: "All Articles", href: "/articles" },
-    { icon: Important, label: "About", href: "/about" },
-    { icon: Heart, label: "Support us", href: "/support" },
-    { icon: Comment, label: "Community", href: "/community" },
-  ],
-}
-
-const TOOGLE_OVERLAY = (state: boolean) => {
-  return !state
-}
+import { navigationVM } from "."
+import { useLocation } from "react-router"
 
 export function Navbar() {
-  const [isOverlayOpen, setIsOverlayOpen] = useReducer(TOOGLE_OVERLAY, false)
+  const location = useLocation()
+
+  const [isOverlayOpen, setIsOverlayOpen] = useState(false)
+
+  useEffect(() => {
+    setIsOverlayOpen(false)
+  }, [location.pathname])
+
+  const toogleOverlay = () => {
+    setIsOverlayOpen(!isOverlayOpen)
+  }
 
   return (
     <>
@@ -33,7 +26,7 @@ export function Navbar() {
         <div className="container-sm flex items-center justify-between">
           <Logo />
 
-          <button className="btn btn--ghost" onClick={setIsOverlayOpen}>
+          <button className="btn btn--ghost" onClick={toogleOverlay}>
             <GridDots />
           </button>
         </div>
@@ -43,7 +36,7 @@ export function Navbar() {
         <div className="overlay__panel">
           <button
             className="btn btn--ghost absolute left-full"
-            onClick={setIsOverlayOpen}
+            onClick={toogleOverlay}
           >
             <Exit className="text-gray-500" />
           </button>
@@ -51,8 +44,13 @@ export function Navbar() {
           <Logo></Logo>
 
           <div className="py-(--space-md)">
-            {vm.navigation.map((n, i) => (
-              <Link key={i} to={n.href} className="nav__item">
+            {navigationVM.map((n, i) => (
+              <Link
+                key={i}
+                to={n.href}
+                className="nav__item"
+                data-current={location.pathname === n.href}
+              >
                 <n.icon /> {n.label}
               </Link>
             ))}
