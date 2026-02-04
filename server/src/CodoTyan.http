@@ -1,0 +1,6 @@
+@CodoTyan_HostAddress = http://localhost:5298
+
+GET {{CodoTyan_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

@@ -11,7 +11,6 @@ export async function apiGetTags(): Promise<string[]> {
 
     return res.json()
   } catch (error) {
-    // return ["TS", "Web"]
     throw handleError(error)
   }
 }
