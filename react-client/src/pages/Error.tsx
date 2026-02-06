@@ -23,10 +23,28 @@ const errorVM = {
   },
 }
 
-export default function Error() {
-  const nav = useNavigate()
+export interface ErrorParams {
+  status: number
+}
+
+export default function Error({ status }: ErrorParams) {
+  const navigate = useNavigate()
   const err = useRouteError()
-  const res = isRouteErrorResponse(err) ? errorVM[404] : errorVM[500]
+  /**Костыль потому что черт пойми как ошибки из компонента пробрасывать в 7 версии реакт роутера если не используешь ненужные никому акшины и лоадеры */
+  const res =
+    status === 404
+      ? errorVM[404]
+      : isRouteErrorResponse(err)
+        ? errorVM[404]
+        : errorVM[500]
+
+  const handleBack = () => {
+    if (window.history.length > 1 && document.referrer) {
+      navigate(-1)
+    } else {
+      navigate("/")
+    }
+  }
 
   return (
     <main className="container-sm min-h-screen flex items-center justify-center">
@@ -42,7 +60,7 @@ export default function Error() {
             {errorVM.actions.primary}
           </Link>
 
-          <button className="btn btn--outlined" onClick={() => nav(-1)}>
+          <button className="btn btn--outlined" onClick={handleBack}>
             {errorVM.actions.secondary}
           </button>
         </div>

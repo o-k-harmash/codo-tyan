@@ -18,6 +18,13 @@ public class ArticleConfiguration : IEntityTypeConfiguration<Article>
         builder.Property(a => a.Title)
             .HasColumnName("title")
             .IsRequired();
+        
+        builder.Property(a => a.Slug)
+            .HasColumnName("slug")
+            .IsRequired();
+
+        builder.HasIndex(a => a.Slug)
+            .IsUnique();
 
         builder.Property(a => a.Description)
             .HasColumnName("description")

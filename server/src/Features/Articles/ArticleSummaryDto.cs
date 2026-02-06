@@ -1,0 +1,1 @@
+public record ArticleSummaryDto(string id, string slug, string title, string description, string[] tags);

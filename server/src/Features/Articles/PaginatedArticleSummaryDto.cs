@@ -1,0 +1,1 @@
+public record PaginatedArticleSummaryDto(int totalPages, ArticleSummaryDto[] articles);

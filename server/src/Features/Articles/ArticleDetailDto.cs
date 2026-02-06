@@ -1,0 +1,1 @@
+public record ArticleDetailDto(string id, string title, string rawContent);
