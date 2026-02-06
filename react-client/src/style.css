@@ -3,7 +3,15 @@
 
 @font-face {
   font-family: Inter;
-  src: url("./Inter/Inter-VariableFont_opsz,wght.ttf") format("truetype");
+  src: url("/Inter/Inter-VariableFont_opsz,wght.ttf") format("truetype");
+  font-weight: 400 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: GoogleSansCode;
+  src: url("/Code/GoogleSansCode-VariableFont_wght.ttf") format("truetype");
   font-weight: 400 600;
   font-style: normal;
   font-display: swap;
@@ -415,11 +423,13 @@
   }
 
   .prose code {
-    font-size: 0.95em;
-    padding: 0.15em 0.35em;
+    font-family: GoogleSansCode;
+    font-size: 0.8em;
+    padding: 0.45em 0.8em;
     border-radius: 4px;
-    background: var(--color-gray-100);
-    color: var(--color-red-600);
+    font-weight: 500;
+    background: var(--color-gray-50);
+    color: var(--color-pink-500);
   }
 
   /* ==============================
@@ -486,10 +496,11 @@
   }
 
   .prose pre code {
+    font-family: GoogleSansCode;
     display: block;
     padding: var(--space-md);
     overflow: auto hidden;
-    font-size: 0.9em;
+    font-size: 0.8em;
     line-height: 1.6;
     scrollbar-gutter: stable;
     scrollbar-width: thin;
