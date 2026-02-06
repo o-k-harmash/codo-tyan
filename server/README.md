@@ -85,6 +85,17 @@ docker run -d \
   postgres:16
 ```
 
+#### Redis
+```bash
+docker run -d \
+  --name redis-cache \
+  --network mynetwork \
+  -p 6379:6379 \
+  -e REDIS_PASSWORD=secret \
+  redis:7-alpine \
+  redis-server --requirepass secret
+```
+
 #### pgAdmin (опционально)
 ```bash
 docker run -d \
@@ -159,26 +170,31 @@ ON CONFLICT (id) DO NOTHING;
 
 ### Insert Articles
 ```sql
-INSERT INTO articles (title, description)
+INSERT INTO articles (title, slug, description)
 VALUES
 (
   'React course',
+  'react-cource',
   'Learn the fundamentals of React including JSX, hooks, and state management.'
 ),
 (
   'HTML course',
+  'html-cource',
   'Master HTML5 semantic layouts, responsive design, and accessibility.'
 ),
 (
   'Advanced JavaScript course',
+  'advanced-javascript-cource',
   'Deep dive into closures, async programming, promises, and ES6+ features.'
 ),
 (
   'TypeScript course',
+  'advanced-typescript-cource',
   'Learn TypeScript for scalable web applications and backend integration.'
 ),
 (
-  'Node.js Backend course',
+  'NET core Backend course',
+  'net-cource',
   'Build RESTful APIs with Node.js, Express, and databases.'
 );
 ```
@@ -255,12 +271,4 @@ GET /api/tags
 - UUIDs генерируются в PostgreSQL (gen_random_uuid())  
 - No cascade deletes (только явный контроль)  
 - Many-to-many реализовано через явную таблицу связей  
-- API frontend-agnostic  
-
----
-
-## Recommendations Before Commit
-"""
-dotnet format
-dotnet test
-"""
+- API frontend-agnostic

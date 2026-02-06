@@ -84,7 +84,7 @@ export default function Home() {
           mt-(--space-md)"
       >
         {articles.map((article) => (
-          <Link to={`/articles/${article.id}`} key={article.id}>
+          <Link to={`/articles/${article.slug}`} key={article.id}>
             <div
               className="flex flex-col gap-(--space-md) rounded-md border
                 border-gray-300 p-(--space-md)"

@@ -1,5 +1,6 @@
 export interface ArticleBase {
   id: string
+  slug: string
   title: string
 }
 

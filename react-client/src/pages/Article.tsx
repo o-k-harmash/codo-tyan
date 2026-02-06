@@ -2,7 +2,7 @@ import { Spinner } from "@/components/Spinner"
 import { apiGetArticle } from "@/services/api/articles"
 import type { ArticleResponse } from "@/types/response"
 import { useEffect, useLayoutEffect, useRef, useState } from "react"
-import { useParams } from "react-router"
+import { useNavigate, useParams } from "react-router"
 import hljs from "highlight.js"
 import type { AppError } from "@/utils/appError"
 
@@ -11,6 +11,7 @@ type ArticleRouteParams = {
 }
 
 export default function Article() {
+  const navigate = useNavigate()
   const { articleId } = useParams() as ArticleRouteParams
 
   const proseRef = useRef<HTMLDivElement | null>(null)
@@ -45,6 +46,9 @@ export default function Article() {
 
   if (error) {
     switch (error.type) {
+      case "NOT_FOUND":
+        navigate("/error", { state: { status: 404, message: "Not Found" } })
+        break
       default:
         throw error
     }

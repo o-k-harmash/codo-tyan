@@ -59,6 +59,7 @@
     font-size: var(--text-sm);
     line-height: var(--text-sm--line-height);
     text-align: justify;
+    word-break: break-all;
   }
 
   p {
@@ -351,45 +352,84 @@
     display: none;
   }
 
+  /* ==============================
+   Base container
+   ============================== */
+
   .prose {
     font-size: var(--text-base);
     display: flex;
     flex-direction: column;
   }
 
-  .prose img {
-    display: block;
-    width: 100%;
-    height: auto;
-    max-width: 100%;
-    object-fit: contain;
-    aspect-ratio: auto;
-    align-self: center;
-  }
-
   .prose > * + * {
     margin-top: var(--space-md);
   }
 
+  /* ==============================
+   Headings
+   ============================== */
+
+  .prose h1,
+  .prose h2,
   .prose h3,
   .prose h4,
   .prose h5,
   .prose h6 {
     font-weight: var(--font-weight-semibold);
-    color: var(--fg-secondary);
-    line-height: var(--text-xl--line-height);
-    font-size: var(--text-xl);
+    line-height: 1.25;
+    scroll-margin-top: var(--space-xl);
   }
 
+  .prose h1 {
+    margin-top: var(--space-xl);
+  }
+
+  .prose h2 {
+    margin-top: var(--space-lg);
+    padding-bottom: var(--space-xs);
+    border-bottom: 1px solid var(--bg-secondary);
+  }
+
+  .prose h5,
+  .prose h6 {
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  /* ==============================
+   Paragraphs & inline text
+   ============================== */
+
   .prose p {
-    line-height: calc(var(--space-md) * 2); /* ~32px */
+    line-height: 1.8;
     margin-block: var(--space-sm);
   }
 
+  .prose strong {
+    font-weight: var(--font-weight-semibold);
+  }
+
+  .prose em {
+    font-style: italic;
+  }
+
+  .prose code {
+    font-size: 0.95em;
+    padding: 0.15em 0.35em;
+    border-radius: 4px;
+    background: var(--color-gray-100);
+    color: var(--color-red-600);
+  }
+
+  /* ==============================
+   Lists
+   ============================== */
+
   .prose ul,
   .prose ol {
-    margin-block: var(--space-md);
     padding-left: var(--space-lg);
+    margin-block: var(--space-md);
   }
 
   .prose ul {
@@ -400,67 +440,144 @@
     list-style-type: decimal;
   }
 
-  .prose li ol,
-  .prose li ul {
-    margin-block: 0;
-  }
-
   .prose li {
-    padding-top: var(--space-sm);
-    line-height: var(--space-lg);
+    line-height: 1.6;
+    padding-top: var(--space-xs);
   }
 
   .prose li::marker {
     color: var(--fg-tertiary);
   }
 
-  .prose code {
-    font-size: 0.95em;
+  /* вложенные списки */
+  .prose li ul,
+  .prose li ol {
+    margin-top: var(--space-xs);
+    margin-bottom: 0;
   }
 
-  /* Стили только для контейнера <pre> */
+  /* ==============================
+   Images
+   ============================== */
+
+  .prose img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin-inline: auto;
+  }
+
+  /* подписи, если есть */
+  .prose img + em {
+    display: block;
+    text-align: center;
+    font-size: var(--text-sm);
+    color: var(--fg-tertiary);
+  }
+
+  /* ==============================
+   Code blocks
+   ============================== */
+
   .prose pre {
-    border-radius: var(--space-sm);
     margin-block: var(--space-md);
-    box-sizing: border-box;
-    overflow: hidden; /* НЕ скрываем скролл, пусть <code> сам скроллится */
+    border-radius: var(--space-sm);
+    overflow: hidden;
   }
 
-  /* <code> внутри <pre> */
   .prose pre code {
-    display: block; /* чтобы блок был шире строки */
-    overflow: auto hidden; /* горизонтальный скролл */ /* вертикальный не нужен */
-    scrollbar-gutter: stable; /* ширина скролла не влияет на layout */
-    background: transparent; /* чтобы не конфликтовало с темой */
+    display: block;
+    padding: var(--space-md);
+    overflow: auto hidden;
+    font-size: 0.9em;
+    line-height: 1.6;
+    scrollbar-gutter: stable;
     scrollbar-width: thin;
     scrollbar-color: rgba(255, 255, 255, 25%) transparent;
   }
 
-  /* Chrome, Edge, Safari */
-  .prose pre code::-webkit-scrollbar {
-    height: 6px;
+  /* ==============================
+   Blockquotes
+   ============================== */
+
+  .prose blockquote {
+    margin-block: var(--space-md);
+    padding-left: var(--space-md);
+    border-left: 3px solid var(--bg-secondary);
+    color: var(--fg-secondary);
   }
 
-  .prose pre code::-webkit-scrollbar-track {
-    background: transparent;
+  .prose blockquote > * {
+    margin: 0;
   }
 
-  .prose pre code::-webkit-scrollbar-thumb {
-    background-color: rgba(255, 255, 255, 25%);
-    border-radius: 3px;
+  /* ==============================
+   Horizontal rule
+   ============================== */
+
+  .prose hr {
+    border: none;
+    height: 1px;
+    background: var(--bg-secondary);
+    margin-block: var(--space-lg);
   }
 
-  .prose pre code::-webkit-scrollbar-thumb:hover {
-    background-color: rgba(255, 255, 255, 40%);
+  /* ==============================
+   Tables
+   ============================== */
+
+  .prose table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-block: var(--space-md);
+    font-size: var(--text-sm);
   }
+
+  .prose th,
+  .prose td {
+    padding: var(--space-sm) var(--space-md);
+    border: 1px solid var(--border-subtle);
+    text-align: left;
+    vertical-align: top;
+  }
+
+  .prose th {
+    font-weight: var(--font-weight-semibold);
+    background: var(--bg-secondary);
+  }
+
+  .prose tr:nth-child(even) td {
+    background: var(--bg-muted);
+  }
+
+  /* ==============================
+   Links
+   ============================== */
 
   .prose a {
-    font-weight: 600;
-    color: blue;
+    color: var(--link-primary);
+    font-weight: 500;
     text-decoration: underline;
+    text-underline-offset: 2px;
   }
 
-  .prose a:visited {
-    color: plum;
+  .prose a:hover {
+    color: var(--link-hover);
+  }
+
+  /* ==============================
+   GitHub-style details/summary
+   ============================== */
+
+  .prose details {
+    margin-block: var(--space-md);
+    padding: var(--space-sm) var(--space-md);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--space-xs);
+  }
+
+  .prose summary {
+    cursor: pointer;
+    font-weight: var(--font-weight-semibold);
   }
 }

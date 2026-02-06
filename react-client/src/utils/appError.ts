@@ -54,4 +54,9 @@ export default {
       message: "Network error",
       details,
     }),
+  notfoundError: () =>
+    new AppError({
+      type: "NOT_FOUND",
+      message: "Not found",
+    }),
 }
