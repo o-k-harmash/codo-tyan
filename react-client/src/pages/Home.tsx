@@ -69,7 +69,7 @@ export default function Home() {
   return !articles ? (
     <Spinner dataVisible={true}></Spinner>
   ) : (
-    <>
+    <div className="home__content c-container">
       <Tags
         onLoading={setIsLoading}
         onClick={(tag) => {
@@ -79,10 +79,7 @@ export default function Home() {
         selectedTags={selectedTags}
       ></Tags>
 
-      <div
-        className="flex w-full max-w-2xl flex-col gap-(--space-md)
-          mt-(--space-md)"
-      >
+      <div className="flex w-full max-w-2xl flex-col gap-(--space-md)">
         {articles.map((article) => (
           <Link to={`/articles/${article.slug}`} key={article.id}>
             <div
@@ -112,6 +109,6 @@ export default function Home() {
       />
 
       <Spinner dataVisible={isLoading}></Spinner>
-    </>
+    </div>
   )
 }

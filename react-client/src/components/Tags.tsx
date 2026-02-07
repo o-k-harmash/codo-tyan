@@ -35,12 +35,28 @@ export function Tags({ selectedTags, onClick, onLoading }: TagsProps) {
   }
 
   return (
-    <details className="filters">
-      <summary className="filters__toggle btn btn--ghost">
-        <Filter />
-      </summary>
+    <>
+      <details className="filters">
+        <summary className="filters__toggle btn btn--ghost">
+          <Filter />
+        </summary>
 
-      <div className="filters__content">
+        <div className="filters__content">
+          {tags.map((t) => (
+            <button
+              type="button"
+              className="tag"
+              key={t}
+              data-selected={selectedTags.has(t)}
+              onClick={() => onClick(t)}
+            >
+              {t}
+            </button>
+          ))}
+        </div>
+      </details>
+
+      <div className="filters-desktop">
         {tags.map((t) => (
           <button
             type="button"
@@ -53,6 +69,6 @@ export function Tags({ selectedTags, onClick, onLoading }: TagsProps) {
           </button>
         ))}
       </div>
-    </details>
+    </>
   )
 }

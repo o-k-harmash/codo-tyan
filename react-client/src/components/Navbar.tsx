@@ -22,13 +22,33 @@ export function Navbar() {
 
   return (
     <>
-      <nav className="h-14 border-b border-gray-300 py-(--space-sm)">
-        <div className="container-sm flex items-center justify-between">
+      <nav className="navbar">
+        <div className="c-container flex items-center justify-between">
           <Logo />
 
-          <button className="btn btn--ghost" onClick={toogleOverlay}>
+          <button
+            className="navbar__burger btn btn--ghost"
+            onClick={toogleOverlay}
+          >
             <GridDots />
           </button>
+
+          <div className="navbar__menu">
+            <div className="navbar__links">
+              {navigationVM.map((n, i) => (
+                <Link
+                  key={i}
+                  to={n.href}
+                  className="navbar__link"
+                  data-current={location.pathname === n.href}
+                >
+                  {n.label}
+                </Link>
+              ))}
+            </div>
+
+            <button className="navbar__login btn btn--filled">Get started</button>
+          </div>
         </div>
       </nav>
 

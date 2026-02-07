@@ -38,26 +38,22 @@ export function Footer() {
   const { contacts, navigation } = footerVM
 
   return (
-    <footer
-      className="mt-(--space-lg) py-(--space-lg)"
-      role="contentinfo"
-      aria-labelledby="footer-heading"
-    >
-      <div className="container-sm flex flex-col gap-(--space-lg)">
-        <div className="flex flex-col gap-(--space-lg)">
-          <Logo />
-          <p className="text-gray-600">{contacts.description}</p>
-          <div className="flex gap-(--space-lg)">
-            {contacts.links.map((l, k) => (
-              <Link key={k} to={l.href}>
-                <l.icon className="text-gray-600" />
-              </Link>
-            ))}
-          </div>
+    <footer className="footer c-container">
+      <div className="footer__media">
+        <Logo />
+        <p className="text-gray-600">{contacts.description}</p>
+        <div className="flex gap-(--space-lg)">
+          {contacts.links.map((l, k) => (
+            <Link key={k} to={l.href}>
+              <l.icon className="text-gray-600" />
+            </Link>
+          ))}
         </div>
+      </div>
 
+      <div className="footer__links">
         {navigation.map((n, k) => (
-          <div key={k}>
+          <div className="footer__link-group" key={k}>
             <h5>{n.heading}</h5>
             <ul className="mt-(--space-md) flex flex-col gap-(--space-md)">
               {n.links.map((l, k) => (
