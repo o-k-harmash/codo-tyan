@@ -69,7 +69,7 @@ export default function Home() {
   return !articles ? (
     <Spinner dataVisible={true}></Spinner>
   ) : (
-    <div className="home__content c-container">
+    <div className="browser c-container">
       <Tags
         onLoading={setIsLoading}
         onClick={(tag) => {
@@ -79,34 +79,36 @@ export default function Home() {
         selectedTags={selectedTags}
       ></Tags>
 
-      <div className="flex w-full max-w-2xl flex-col gap-(--space-md)">
-        {articles.map((article) => (
-          <Link to={`/articles/${article.slug}`} key={article.id}>
-            <div
-              className="flex flex-col gap-(--space-md) rounded-md border
-                border-gray-300 p-(--space-md)"
-            >
-              <span className="heading-3">{article.title}</span>
+      <div className="browser__article-list">
+        <div className="flex w-full max-w-2xl flex-col gap-(--space-md)">
+          {articles.map((article) => (
+            <Link to={`/articles/${article.slug}`} key={article.id}>
+              <div
+                className="flex flex-col gap-(--space-md) rounded-md border
+                  border-gray-300 p-(--space-md)"
+              >
+                <span className="heading-3">{article.title}</span>
 
-              <div className="flex flex-wrap gap-(--space-sm)">
-                {article.tags.map((t) => (
-                  <span key={t} className="tag">
-                    {t}
-                  </span>
-                ))}
+                <div className="flex flex-wrap gap-(--space-sm)">
+                  {article.tags.map((t) => (
+                    <span key={t} className="tag">
+                      {t}
+                    </span>
+                  ))}
+                </div>
+
+                <p className="text-justify">{article.description}</p>
               </div>
+            </Link>
+          ))}
+        </div>
 
-              <p className="text-justify">{article.description}</p>
-            </div>
-          </Link>
-        ))}
+        <Pagination
+          page={page}
+          totalPages={totalPages}
+          onClick={(page) => setPage(page)}
+        />
       </div>
-
-      <Pagination
-        page={page}
-        totalPages={totalPages}
-        onClick={(page) => setPage(page)}
-      />
 
       <Spinner dataVisible={isLoading}></Spinner>
     </div>

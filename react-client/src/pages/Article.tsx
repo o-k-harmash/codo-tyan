@@ -57,7 +57,7 @@ export default function Article() {
   return !article ? (
     <Spinner dataVisible={true}></Spinner>
   ) : (
-    <div className="article__content c-container">
+    <div className="article__content">
       <header className="article__header">
         <h1>{article.title}</h1>
       </header>

@@ -47,7 +47,9 @@ export function Navbar() {
               ))}
             </div>
 
-            <button className="navbar__login btn btn--filled">Get started</button>
+            <button className="navbar__login btn btn--filled">
+              Get started
+            </button>
           </div>
         </div>
       </nav>
