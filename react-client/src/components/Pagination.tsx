@@ -28,45 +28,43 @@ export function Pagination({ totalPages, page, onClick }: PaginationProps) {
   }
 
   return (
-    <div className="pagination">
-      <nav className="pagination__list" aria-label="Pagination">
-        <button
-          type="button"
-          className="pagination__arrow"
-          onClick={() => onClick(page - 1)}
-          disabled={page === 1}
-        >
-          <GlyphLeft />
-        </button>
+    <div className="browser__pagination">
+      <button
+        type="button"
+        className="browser__arrow"
+        onClick={() => onClick(page - 1)}
+        disabled={page === 1}
+      >
+        <GlyphLeft />
+      </button>
 
-        {pages.map((i, k) =>
-          i === null ? (
-            <span key={k} className="pagination__item">
-              …
-            </span>
-          ) : (
-            <button
-              key={k}
-              type="button"
-              className="pagination__item"
-              onClick={() => onClick(i)}
-              disabled={page === i}
-              data-selected={page === i}
-            >
-              {i}
-            </button>
-          ),
-        )}
+      {pages.map((i, k) =>
+        i === null ? (
+          <span key={k} className="browser__page">
+            …
+          </span>
+        ) : (
+          <button
+            key={k}
+            type="button"
+            className="browser__page"
+            onClick={() => onClick(i)}
+            disabled={page === i}
+            data-selected={page === i}
+          >
+            {i}
+          </button>
+        ),
+      )}
 
-        <button
-          type="button"
-          className="pagination__arrow"
-          onClick={() => onClick(page + 1)}
-          disabled={page === totalPages}
-        >
-          <GlyphRight />
-        </button>
-      </nav>
+      <button
+        type="button"
+        className="browser__arrow"
+        onClick={() => onClick(page + 1)}
+        disabled={page === totalPages}
+      >
+        <GlyphRight />
+      </button>
     </div>
   )
 }

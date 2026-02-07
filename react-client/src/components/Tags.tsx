@@ -36,12 +36,12 @@ export function Tags({ selectedTags, onClick, onLoading }: TagsProps) {
 
   return (
     <>
-      <details className="filters">
-        <summary className="filters__toggle btn btn--ghost">
+      <details className="browser__filters">
+        <summary className="browser__burger btn btn--ghost">
           <Filter />
         </summary>
 
-        <div className="filters__content">
+        <div className="browser__details">
           {tags.map((t) => (
             <button
               type="button"
@@ -56,7 +56,7 @@ export function Tags({ selectedTags, onClick, onLoading }: TagsProps) {
         </div>
       </details>
 
-      <div className="filters-desktop">
+      <div className="browser__filters-desktop">
         {tags.map((t) => (
           <button
             type="button"
