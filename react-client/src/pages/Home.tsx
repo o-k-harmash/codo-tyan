@@ -69,7 +69,7 @@ export default function Home() {
   return !articles ? (
     <Spinner dataVisible={true}></Spinner>
   ) : (
-    <div className="browser c-container">
+    <div className="browser browse-container">
       <Tags
         onLoading={setIsLoading}
         onClick={(tag) => {
@@ -79,35 +79,43 @@ export default function Home() {
         selectedTags={selectedTags}
       ></Tags>
 
-      <div className="browser__article-list">
-        <div className="flex w-full max-w-2xl flex-col gap-(--space-md)">
-          {articles.map((article) => (
-            <Link to={`/articles/${article.slug}`} key={article.id}>
-              <div
-                className="flex flex-col gap-(--space-md) rounded-md border
-                  border-gray-300 p-(--space-md)"
-              >
-                <span className="heading-3">{article.title}</span>
+      <div className="browser__articles-page">
+        {articles.length ? (
+          <>
+            <div className="browser__filtered-articles">
+              {articles.map((article) => (
+                <div className="browser__article-card" key={article.id}>
+                  <h2 className="heading-3">
+                    <Link to={`/articles/${article.slug}`}>
+                      {article.title}{" "}
+                    </Link>
+                  </h2>
 
-                <div className="flex flex-wrap gap-(--space-sm)">
-                  {article.tags.map((t) => (
-                    <span key={t} className="tag">
-                      {t}
-                    </span>
-                  ))}
+                  <div className="browser__article-card__tags">
+                    {article.tags.map((t) => (
+                      <span key={t} className="tag">
+                        {t}
+                      </span>
+                    ))}
+                  </div>
+
+                  <p className="text-justify">{article.description}</p>
                 </div>
+              ))}
+            </div>
 
-                <p className="text-justify">{article.description}</p>
-              </div>
-            </Link>
-          ))}
-        </div>
-
-        <Pagination
-          page={page}
-          totalPages={totalPages}
-          onClick={(page) => setPage(page)}
-        />
+            <Pagination
+              page={page}
+              totalPages={totalPages}
+              onClick={(page) => setPage(page)}
+            />
+          </>
+        ) : (
+          <div className="browser__empty-state">
+            <h2>No articles found</h2>
+            <p>Try changing filters or clearing search.</p>
+          </div>
+        )}
       </div>
 
       <Spinner dataVisible={isLoading}></Spinner>

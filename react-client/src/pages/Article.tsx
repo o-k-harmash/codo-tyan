@@ -57,15 +57,10 @@ export default function Article() {
   return !article ? (
     <Spinner dataVisible={true}></Spinner>
   ) : (
-    <div className="article__content">
-      <header className="article__header">
-        <h1>{article.title}</h1>
-      </header>
-      <section
-        ref={proseRef}
-        className="article__prose prose"
-        dangerouslySetInnerHTML={{ __html: article.rawContent }}
-      ></section>
-    </div>
+    <section
+      ref={proseRef}
+      className="article-container article__prose prose"
+      dangerouslySetInnerHTML={{ __html: article.rawContent }}
+    ></section>
   )
 }
