@@ -24,7 +24,7 @@ const errorVM = {
 }
 
 export interface ErrorParams {
-  status: number
+  status?: number
 }
 
 export default function Error({ status }: ErrorParams) {

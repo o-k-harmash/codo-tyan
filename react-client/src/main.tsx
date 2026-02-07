@@ -18,7 +18,7 @@ const router = createBrowserRouter([
     element: (
       <>
         <Navbar />
-        <main className="container-sm mt-(--space-lg)">
+        <main>
           <Outlet />
         </main>
         <Join />

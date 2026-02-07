@@ -57,15 +57,15 @@ export default function Article() {
   return !article ? (
     <Spinner dataVisible={true}></Spinner>
   ) : (
-    <>
-      <header className="mt-(--space-lg) py-(--space-lg)">
+    <div className="article__content c-container">
+      <header className="article__header">
         <h1>{article.title}</h1>
       </header>
       <section
         ref={proseRef}
-        className="prose mt-(--space-lg)"
+        className="article__prose prose"
         dangerouslySetInnerHTML={{ __html: article.rawContent }}
       ></section>
-    </>
+    </div>
   )
 }
