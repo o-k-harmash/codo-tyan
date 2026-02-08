@@ -164,8 +164,28 @@ INSERT INTO tags (id) VALUES
 ('Docker'),
 ('Architecture'),
 ('Testing'),
-('Performance')
+('Performance'),
+('Vue'),
+('Angular'),
+('Svelte'),
+('SSR'),
+('GraphQL'),
+('REST'),
+('Microservices'),
+('DevOps'),
+('Infrastructure'),
+('Kubernetes'),
+('CI/CD'),
+('Automation'),
+('Cache'),
+('SQL'),
+('NoSQL'),
+('Security'),
+('Authentication'),
+('Mobile'),
+('Flutter')
 ON CONFLICT (id) DO NOTHING;
+
 ```
 
 ### Insert Articles
@@ -173,39 +193,253 @@ ON CONFLICT (id) DO NOTHING;
 INSERT INTO articles (title, slug, description)
 VALUES
 (
-  'React course',
-  'react-cource',
-  'Learn the fundamentals of React including JSX, hooks, and state management.'
+  'Tailwind CSS course',
+  'tailwind-css-course',
+  'Learn utility-first CSS with Tailwind, responsive design, and modern styling techniques.'
 ),
 (
-  'HTML course',
-  'html-cource',
-  'Master HTML5 semantic layouts, responsive design, and accessibility.'
+  'ASP.NET Core Web API',
+  'aspnet-core-web-api',
+  'Build robust Web APIs using ASP.NET Core, Entity Framework, and REST principles.'
 ),
 (
-  'Advanced JavaScript course',
-  'advanced-javascript-cource',
-  'Deep dive into closures, async programming, promises, and ES6+ features.'
+  'Entity Framework Core',
+  'entity-framework-core',
+  'Master EF Core ORM, migrations, and database-first and code-first approaches.'
 ),
 (
-  'TypeScript course',
-  'advanced-typescript-cource',
-  'Learn TypeScript for scalable web applications and backend integration.'
+  'Docker for Developers',
+  'docker-for-developers',
+  'Learn containerization with Docker, Docker Compose, and deployment workflows.'
 ),
 (
-  'NET core Backend course',
-  'net-cource',
-  'Build RESTful APIs with Node.js, Express, and databases.'
-);
+  'System Design Basics',
+  'system-design-basics',
+  'Introduction to system design, architecture patterns, and scalable systems.'
+),
+(
+  'Clean Architecture',
+  'clean-architecture',
+  'Understand Clean Architecture principles for maintainable software design.'
+),
+(
+  'Testing in .NET',
+  'testing-in-dotnet',
+  'Learn unit testing, integration testing, and test-driven development in .NET.'
+)
+('Vue.js Fundamentals', 'vuejs-fundamentals', 'Learn Vue.js 3 basics including reactive data, components, and directives.'),
+('React Advanced Patterns', 'react-advanced-patterns', 'Dive into render props, HOCs, context, and performance optimization in React.'),
+('Angular Complete Guide', 'angular-complete-guide', 'Master Angular 14 including modules, components, services, and RxJS.'),
+('Svelte for Beginners', 'svelte-for-beginners', 'Learn Svelte basics, reactive stores, and component-driven development.'),
+('Next.js 13', 'nextjs-13', 'Build server-side rendered React applications with Next.js 13 features.'),
+('Nuxt.js 3', 'nuxtjs-3', 'Master SSR and static site generation using Nuxt.js 3.'),
+('GraphQL API Development', 'graphql-api-development', 'Learn how to build GraphQL APIs with queries, mutations, and subscriptions.'),
+('RESTful API Design', 'restful-api-design', 'Best practices for designing scalable REST APIs with proper HTTP semantics.'),
+('Microservices Architecture', 'microservices-architecture', 'Introduction to microservices patterns, communication, and deployment strategies.'),
+('Kubernetes Basics', 'kubernetes-basics', 'Learn Kubernetes core concepts, pods, deployments, and services.'),
+('Docker Compose in Depth', 'docker-compose-in-depth', 'Learn multi-container applications and orchestration with Docker Compose.'),
+('CI/CD with GitHub Actions', 'ci-cd-github-actions', 'Automate builds, tests, and deployments using GitHub Actions workflows.'),
+('Redis for Developers', 'redis-for-developers', 'Use Redis for caching, pub/sub, and fast data storage in applications.'),
+('PostgreSQL Advanced', 'postgresql-advanced', 'Master PostgreSQL queries, indexing, transactions, and performance tuning.'),
+('MongoDB Essentials', 'mongodb-essentials', 'Learn MongoDB CRUD, aggregation, and schema design for modern apps.'),
+('Web Security Basics', 'web-security-basics', 'Understand authentication, authorization, XSS, CSRF, and security best practices.'),
+('OAuth2 and JWT', 'oauth2-jwt', 'Implement secure authentication and authorization using OAuth2 and JWT tokens.'),
+('React Native Mobile Apps', 'react-native-mobile-apps', 'Build cross-platform mobile applications using React Native and Expo.'),
+('Flutter for Beginners', 'flutter-for-beginners', 'Learn Flutter basics and build fast native mobile apps.'),
+('TypeORM with Node.js', 'typeorm-nodejs', 'Work with TypeORM for database operations in Node.js applications.');
 ```
 
 ### Article ↔ Tags Mapping
 ```sql
+-- Vue.js Fundamentals
 INSERT INTO article_tags (article_id, tag_id)
 SELECT a.id, t.id
 FROM articles a
-JOIN tags t ON t.id IN ('React', 'Frontend', 'Web')
-WHERE a.title = 'React course';
+JOIN tags t ON t.id IN ('Frontend', 'Web', 'Vue')
+WHERE a.title = 'Vue.js Fundamentals';
+
+-- React Advanced Patterns
+INSERT INTO article_tags (article_id, tag_id)
+SELECT a.id, t.id
+FROM articles a
+JOIN tags t ON t.id IN ('Frontend', 'Web', 'React')
+WHERE a.title = 'React Advanced Patterns';
+
+-- Angular Complete Guide
+INSERT INTO article_tags (article_id, tag_id)
+SELECT a.id, t.id
+FROM articles a
+JOIN tags t ON t.id IN ('Frontend', 'Web', 'Angular')
+WHERE a.title = 'Angular Complete Guide';
+
+-- Svelte for Beginners
+INSERT INTO article_tags (article_id, tag_id)
+SELECT a.id, t.id
+FROM articles a
+JOIN tags t ON t.id IN ('Frontend', 'Web', 'Svelte')
+WHERE a.title = 'Svelte for Beginners';
+
+-- Next.js 13
+INSERT INTO article_tags (article_id, tag_id)
+SELECT a.id, t.id
+FROM articles a
+JOIN tags t ON t.id IN ('Frontend', 'Web', 'React', 'SSR')
+WHERE a.title = 'Next.js 13';
+
+-- Nuxt.js 3
+INSERT INTO article_tags (article_id, tag_id)
+SELECT a.id, t.id
+FROM articles a
+JOIN tags t ON t.id IN ('Frontend', 'Web', 'Vue', 'SSR')
+WHERE a.title = 'Nuxt.js 3';
+
+-- GraphQL API Development
+INSERT INTO article_tags (article_id, tag_id)
+SELECT a.id, t.id
+FROM articles a
+JOIN tags t ON t.id IN ('API', 'Backend', 'GraphQL')
+WHERE a.title = 'GraphQL API Development';
+
+-- RESTful API Design
+INSERT INTO article_tags (article_id, tag_id)
+SELECT a.id, t.id
+FROM articles a
+JOIN tags t ON t.id IN ('API', 'Backend', 'REST')
+WHERE a.title = 'RESTful API Design';
+
+-- Microservices Architecture
+INSERT INTO article_tags (article_id, tag_id)
+SELECT a.id, t.id
+FROM articles a
+JOIN tags t ON t.id IN ('Architecture', 'Backend', 'Microservices')
+WHERE a.title = 'Microservices Architecture';
+
+-- Kubernetes Basics
+INSERT INTO article_tags (article_id, tag_id)
+SELECT a.id, t.id
+FROM articles a
+JOIN tags t ON t.id IN ('DevOps', 'Infrastructure', 'Kubernetes')
+WHERE a.title = 'Kubernetes Basics';
+
+-- Docker Compose in Depth
+INSERT INTO article_tags (article_id, tag_id)
+SELECT a.id, t.id
+FROM articles a
+JOIN tags t ON t.id IN ('DevOps', 'Docker', 'Backend')
+WHERE a.title = 'Docker Compose in Depth';
+
+-- CI/CD with GitHub Actions
+INSERT INTO article_tags (article_id, tag_id)
+SELECT a.id, t.id
+FROM articles a
+JOIN tags t ON t.id IN ('DevOps', 'CI/CD', 'Automation')
+WHERE a.title = 'CI/CD with GitHub Actions';
+
+-- Redis for Developers
+INSERT INTO article_tags (article_id, tag_id)
+SELECT a.id, t.id
+FROM articles a
+JOIN tags t ON t.id IN ('Database', 'Backend', 'Cache')
+WHERE a.title = 'Redis for Developers';
+
+-- PostgreSQL Advanced
+INSERT INTO article_tags (article_id, tag_id)
+SELECT a.id, t.id
+FROM articles a
+JOIN tags t ON t.id IN ('Database', 'Backend', 'SQL')
+WHERE a.title = 'PostgreSQL Advanced';
+
+-- MongoDB Essentials
+INSERT INTO article_tags (article_id, tag_id)
+SELECT a.id, t.id
+FROM articles a
+JOIN tags t ON t.id IN ('Database', 'Backend', 'NoSQL')
+WHERE a.title = 'MongoDB Essentials';
+
+-- Web Security Basics
+INSERT INTO article_tags (article_id, tag_id)
+SELECT a.id, t.id
+FROM articles a
+JOIN tags t ON t.id IN ('Security', 'Web', 'Frontend')
+WHERE a.title = 'Web Security Basics';
+
+-- OAuth2 and JWT
+INSERT INTO article_tags (article_id, tag_id)
+SELECT a.id, t.id
+FROM articles a
+JOIN tags t ON t.id IN ('Security', 'Backend', 'Authentication')
+WHERE a.title = 'OAuth2 and JWT';
+
+-- React Native Mobile Apps
+INSERT INTO article_tags (article_id, tag_id)
+SELECT a.id, t.id
+FROM articles a
+JOIN tags t ON t.id IN ('Frontend', 'Mobile', 'React')
+WHERE a.title = 'React Native Mobile Apps';
+
+-- Flutter for Beginners
+INSERT INTO article_tags (article_id, tag_id)
+SELECT a.id, t.id
+FROM articles a
+JOIN tags t ON t.id IN ('Frontend', 'Mobile', 'Flutter')
+WHERE a.title = 'Flutter for Beginners';
+
+-- TypeORM with Node.js
+INSERT INTO article_tags (article_id, tag_id)
+SELECT a.id, t.id
+FROM articles a
+JOIN tags t ON t.id IN ('Backend', 'Database', 'Node.js')
+WHERE a.title = 'TypeORM with Node.js';
+
+-- Tailwind CSS course
+INSERT INTO article_tags (article_id, tag_id)
+SELECT a.id, t.id
+FROM articles a
+JOIN tags t ON t.id IN ('CSS', 'Web', 'Frontend')
+WHERE a.title = 'Tailwind CSS course';
+
+-- ASP.NET Core Web API
+INSERT INTO article_tags (article_id, tag_id)
+SELECT a.id, t.id
+FROM articles a
+JOIN tags t ON t.id IN ('.NET', 'Backend', 'API', 'Web')
+WHERE a.title = 'ASP.NET Core Web API';
+
+-- Entity Framework Core
+INSERT INTO article_tags (article_id, tag_id)
+SELECT a.id, t.id
+FROM articles a
+JOIN tags t ON t.id IN ('.NET', 'Database', 'Backend')
+WHERE a.title = 'Entity Framework Core';
+
+-- Docker for Developers
+INSERT INTO article_tags (article_id, tag_id)
+SELECT a.id, t.id
+FROM articles a
+JOIN tags t ON t.id IN ('Docker', 'Backend', 'Architecture')
+WHERE a.title = 'Docker for Developers';
+
+-- System Design Basics
+INSERT INTO article_tags (article_id, tag_id)
+SELECT a.id, t.id
+FROM articles a
+JOIN tags t ON t.id IN ('Architecture', 'Backend', 'Performance')
+WHERE a.title = 'System Design Basics';
+
+-- Clean Architecture
+INSERT INTO article_tags (article_id, tag_id)
+SELECT a.id, t.id
+FROM articles a
+JOIN tags t ON t.id IN ('Architecture', '.NET', 'Backend')
+WHERE a.title = 'Clean Architecture';
+
+-- Testing in .NET
+INSERT INTO article_tags (article_id, tag_id)
+SELECT a.id, t.id
+FROM articles a
+JOIN tags t ON t.id IN ('Testing', '.NET', 'Backend')
+WHERE a.title = 'Testing in .NET';
+
 ```
 (аналогично для остальных статей)  
 

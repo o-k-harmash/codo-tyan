@@ -4,7 +4,6 @@ import { createBrowserRouter, Outlet } from "react-router"
 import { RouterProvider } from "react-router/dom"
 import "highlight.js/styles/atom-one-dark.css"
 import "./style.css"
-import Error from "./pages/Error"
 import Home from "./pages/Home"
 import { Navbar } from "./components/Navbar"
 import { Join } from "./components/Join"
@@ -12,6 +11,7 @@ import { Footer } from "./components/Footer"
 import Article from "./pages/Article"
 import About from "./pages/About"
 import SupportAndCommunity from "./pages/SupportAndCommunity"
+import Exception from "./pages/Exception"
 
 const router = createBrowserRouter([
   {
@@ -25,7 +25,6 @@ const router = createBrowserRouter([
         <Footer />
       </>
     ),
-    errorElement: <Error />,
     children: [
       {
         path: "/",
@@ -39,6 +38,14 @@ const router = createBrowserRouter([
         element: <Article />,
       },
     ],
+  },
+  {
+    path: "/500",
+    element: <Exception status={500} />,
+  },
+  {
+    path: "*",
+    element: <Exception status={404} />,
   },
 ])
 

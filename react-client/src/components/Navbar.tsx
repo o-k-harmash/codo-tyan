@@ -65,7 +65,7 @@ export function Navbar() {
 
           <Logo></Logo>
 
-          <div className="py-(--space-md)">
+          <div className="overlay__section py-(--space-md)">
             {navigationVM.map((n, i) => (
               <Link
                 key={i}

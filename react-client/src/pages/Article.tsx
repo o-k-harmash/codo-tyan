@@ -47,10 +47,10 @@ export default function Article() {
   if (error) {
     switch (error.type) {
       case "NOT_FOUND":
-        navigate("/error", { state: { status: 404, message: "Not Found" } })
+        navigate("/404", { state: { status: 404 }, replace: true })
         break
       default:
-        throw error
+        navigate("/500", { state: { status: 500 }, replace: true })
     }
   }
 

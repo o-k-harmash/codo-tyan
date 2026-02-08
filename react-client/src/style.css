@@ -68,6 +68,10 @@
     line-height: var(--text-sm--line-height);
   }
 
+  main {
+    min-height: 100vh;
+  }
+
   p {
     line-height: var(--space-lg);
   }
@@ -197,7 +201,7 @@
     width: 20rem;
     min-height: 100vh;
     background: var(--bg-primary);
-    padding: var(--space-sm) var(--space-md);
+    padding: var(--space-sm) var(--space-sm);
     transform: translateX(-125%);
     transition: transform 250ms ease;
     transition-delay: 50ms;
@@ -208,21 +212,30 @@
     transform: translateX(0);
   }
 
+  .overlay__section {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing)
+  }
+
   .nav__item {
+    font-weight: 500;
     display: flex;
     align-items: center;
     gap: var(--space-sm);
-    padding: var(--space-md) var(--space-sm);
+    padding: var(--space-sm) var(--space-sm);
     color: var(--color-gray-500);
     cursor: pointer;
   }
 
   .nav__item[data-current="true"] {
-    background-color: var(--color-gray-100);
+    background-color: var(--color-gray-200);
+    color: var(--color-gray-900);
   }
 
   .nav__item:hover {
-    background-color: var(--color-gray-50);
+    background-color: var(--color-gray-100);
+    color: var(--color-gray-900);
   }
 
   .nav__item-svg,
@@ -230,8 +243,14 @@
     color: var(--color-gray-400);
   }
 
+  .nav__item:hover .nav__item-svg,
+  .nav__item:hover svg {
+    color: var(--color-gray-600);
+  }
+
   .btn {
     width: max-content;
+    height: max-content;
     cursor: pointer;
     border-radius: var(--radius-sm);
     font-family: var(--font-inter);
@@ -403,7 +422,7 @@
     line-height: 1.6;
     scrollbar-gutter: stable;
     scrollbar-width: thin;
-    scrollbar-color: rgba(255, 255, 255, 25%) transparent;
+    scrollbar-color: var(--color-gray-300) transparent;
   }
 
   /* ==============================
@@ -540,7 +559,6 @@
     flex-direction: column;
     align-items: stretch;
     width: 100%;
-    min-height: 100vh;
   }
 
   .browser__filtered-articles {
@@ -556,11 +574,13 @@
     border-radius: var(--space-sm);
     border: 1px solid var(--color-gray-300);
     padding: var(--space-md);
-    transition: box-shadow 150ms ease, transform 150ms ease;
+    transition:
+      box-shadow 150ms ease,
+      transform 150ms ease;
   }
 
   .browser__article-card:hover {
-    box-shadow: 0 4px 16px rgba(0,0,0,8%);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 8%);
   }
 
   .browser__article-card__tags {
@@ -568,7 +588,7 @@
     flex-wrap: wrap;
     gap: var(--space-sm);
   }
-  
+
   .browser__pagination {
     align-items: center;
     flex-wrap: wrap;
@@ -624,7 +644,10 @@
     max-height: 0;
     opacity: 0;
     transform: translateY(-0.25rem);
-    overflow: hidden;
+    overflow-y: auto;
+    scrollbar-gutter: stable;
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-gray-300) transparent;
     transition:
       max-height 200ms ease,
       opacity 200ms ease,
@@ -673,6 +696,11 @@
       flex-wrap: wrap;
       gap: var(--space-sm);
       flex: 0 1 284px;
+      max-height: 24.5rem;
+      overflow-y: auto;
+      scrollbar-gutter: stable;
+      scrollbar-width: thin;
+      scrollbar-color: var(--color-gray-300) transparent;
     }
 
     .browser__filters {
@@ -685,9 +713,8 @@
     * NAVBAR STYLES            
     * ============================= 
     */
-  
+
   .navbar {
-    height: 4rem;
     border-bottom: 1px solid var(--color-gray-300);
     padding-block: var(--space-sm);
   }
@@ -703,20 +730,20 @@
   }
 
   .navbar__link {
+    font-weight: 500;
     padding-inline: var(--space-sm);
-    color: var(--color-gray-500);
+    color: var(--color-gray-600);
     line-height: 2.5;
   }
 
   .navbar__link[data-current="true"] {
-    color: var(--color-gray-800);
+    color: var(--color-gray-900);
     font-weight: 500;
-    border-bottom: 2px solid var(--color-gray-400);
   }
 
   .navbar__link:hover {
-    border-bottom: 2px solid var(--color-gray-400);
-    color: var(--color-gray-400);
+    border-bottom: 2px solid var(--color-gray-300);
+    color: var(--color-gray-900);
   }
 
   .navbar__login {
@@ -790,11 +817,16 @@
     */
 
   .footer {
-    margin-top: var(--space-lg);
-    padding-block: var(--space-lg);
+    display: flex;
+    flex-direction: column;
+  }
+
+  .footer__info {
+    padding-block: calc(var(--spacing) * 16);
     display: flex;
     flex-direction: column;
     gap: calc(var(--spacing) * 8);
+    border-bottom: 1px solid var(--color-gray-300);
   }
 
   .footer__brand {
@@ -824,6 +856,12 @@
     flex: 1 1 auto;
   }
 
+  .footer__copyrighting {
+    padding-block: calc(var(--spacing) * 8);
+    font-size: 0.75rem;
+    color: var(--color-gray-600);
+  }
+
   /** 
     * =============================
     * FOOTER — TABLET (>=768px)
@@ -831,10 +869,6 @@
     */
 
   @media (width >= 768px) {
-    .footer {
-      flex-direction: column;
-    }
-
     .footer__brand {
       text-align: left;
       margin-bottom: var(--space-lg);
@@ -857,7 +891,7 @@
     */
 
   @media (width >= 1024px) {
-    .footer {
+    .footer__info {
       flex-flow: row wrap;
       align-items: flex-start;
     }
