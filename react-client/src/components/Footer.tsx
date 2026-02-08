@@ -39,71 +39,77 @@ export function Footer() {
 
   return (
     <footer className="footer c-container">
-      <div className="footer__brand">
-        <Logo />
-        <p className="text-gray-600">{contacts.description}</p>
-        <div className="flex gap-(--space-lg)">
-          {contacts.links.map((l, k) => (
-            <Link key={k} to={l.href}>
-              <l.icon className="text-gray-600" />
-            </Link>
-          ))}
+      <div className="footer__info">
+        <div className="footer__brand">
+          <Logo />
+          <p className="text-gray-600">{contacts.description}</p>
+          <div className="flex gap-(--space-lg)">
+            {contacts.links.map((l, k) => (
+              <Link key={k} to={l.href}>
+                <l.icon className="text-gray-500" />
+              </Link>
+            ))}
+          </div>
+        </div>
+
+        <div className="footer__nav">
+          <div className="footer__nav-section">
+            <div className="footer__nav-group">
+              <h5>{navigation[0].heading}</h5>
+              <ul className="mt-(--space-md) flex flex-col gap-(--space-md)">
+                {navigation[0].links.map((l, k) => (
+                  <li key={k}>
+                    <Link to={l.href} className="text-gray-500">
+                      {l.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div className="footer__nav-group">
+              <h5>{navigation[1].heading}</h5>
+              <ul className="mt-(--space-md) flex flex-col gap-(--space-md)">
+                {navigation[1].links.map((l, k) => (
+                  <li key={k}>
+                    <Link to={l.href} className="text-gray-500">
+                      {l.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+          <div className="footer__nav-section">
+            <div className="footer__nav-group">
+              <h5>{navigation[0].heading}</h5>
+              <ul className="mt-(--space-md) flex flex-col gap-(--space-md)">
+                {navigation[0].links.map((l, k) => (
+                  <li key={k}>
+                    <Link to={l.href} className="text-gray-500">
+                      {l.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div className="footer__nav-group">
+              <h5>{navigation[1].heading}</h5>
+              <ul className="mt-(--space-md) flex flex-col gap-(--space-md)">
+                {navigation[1].links.map((l, k) => (
+                  <li key={k}>
+                    <Link to={l.href} className="text-gray-500">
+                      {l.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
         </div>
       </div>
 
-      <div className="footer__nav">
-        <div className="footer__nav-section">
-          <div className="footer__nav-group">
-            <h5>{navigation[0].heading}</h5>
-            <ul className="mt-(--space-md) flex flex-col gap-(--space-md)">
-              {navigation[0].links.map((l, k) => (
-                <li key={k}>
-                  <Link to={l.href} className="text-gray-500">
-                    {l.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-          <div className="footer__nav-group">
-            <h5>{navigation[1].heading}</h5>
-            <ul className="mt-(--space-md) flex flex-col gap-(--space-md)">
-              {navigation[1].links.map((l, k) => (
-                <li key={k}>
-                  <Link to={l.href} className="text-gray-500">
-                    {l.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
-        <div className="footer__nav-section">
-          <div className="footer__nav-group">
-            <h5>{navigation[0].heading}</h5>
-            <ul className="mt-(--space-md) flex flex-col gap-(--space-md)">
-              {navigation[0].links.map((l, k) => (
-                <li key={k}>
-                  <Link to={l.href} className="text-gray-500">
-                    {l.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-          <div className="footer__nav-group">
-            <h5>{navigation[1].heading}</h5>
-            <ul className="mt-(--space-md) flex flex-col gap-(--space-md)">
-              {navigation[1].links.map((l, k) => (
-                <li key={k}>
-                  <Link to={l.href} className="text-gray-500">
-                    {l.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
+      <div className="footer__copyrighting">
+        © 2026 The CodoTyan Project. All rights reserved.
       </div>
     </footer>
   )

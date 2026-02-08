@@ -4,8 +4,8 @@ import { Tags } from "@/components/Tags"
 import { apiGetArticles } from "@/services/api/articles"
 import type { ArticlePreview } from "@/types/article"
 import type { AppError } from "@/utils/appError"
-import { useEffect, useReducer, useState } from "react"
-import { Link } from "react-router"
+import { useEffect, useLayoutEffect, useReducer, useState } from "react"
+import { Link, useNavigate } from "react-router"
 
 const TOOGLE_TAG = (state: Set<string>, tag: string) => {
   const next = new Set(state)
@@ -18,6 +18,8 @@ const TOOGLE_TAG = (state: Set<string>, tag: string) => {
 }
 
 export default function Home() {
+  const navigate = useNavigate()
+
   const [articles, setArticles] = useState<ArticlePreview[] | null>(null)
   const [totalPages, setTotalPages] = useState(0)
   const [articlesPageLimit] = useState(15)
@@ -59,10 +61,14 @@ export default function Home() {
     getArticles()
   }, [selectedTags, page, articlesPageLimit])
 
+  useLayoutEffect(() => {
+    window.scrollTo(0, 0)
+  }, [page])
+
   if (error) {
     switch (error.type) {
       default:
-        throw error
+        navigate("/500", { state: { status: 500 }, replace: true })
     }
   }
 
