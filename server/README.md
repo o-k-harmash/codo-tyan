@@ -226,7 +226,7 @@ VALUES
   'Testing in .NET',
   'testing-in-dotnet',
   'Learn unit testing, integration testing, and test-driven development in .NET.'
-)
+),
 ('Vue.js Fundamentals', 'vuejs-fundamentals', 'Learn Vue.js 3 basics including reactive data, components, and directives.'),
 ('React Advanced Patterns', 'react-advanced-patterns', 'Dive into render props, HOCs, context, and performance optimization in React.'),
 ('Angular Complete Guide', 'angular-complete-guide', 'Master Angular 14 including modules, components, services, and RxJS.'),
@@ -442,6 +442,23 @@ WHERE a.title = 'Testing in .NET';
 
 ```
 (аналогично для остальных статей)  
+
+---
+
+## Github Auth
+
+Зарегестрируйте свое приложение https://github.com/settings/applications/new и добавьте ClientId и ClientSecret в файл appsettings.json
+
+```txt
+"GitHub": {
+  "ClientId": "your_client_id",
+  "ClientSecret": "your_client_secret",
+  "CallbackPath": "/signin-github",
+  "AuthorizationEndpoint": "https://github.com/login/oauth/authorize",
+  "TokenEndpoint": "https://github.com/login/oauth/access_token",
+  "UserInformationEndpoint": "https://api.github.com/user"
+},
+```
 
 ---
 

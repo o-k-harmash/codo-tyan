@@ -1,4 +1,4 @@
-import { Link } from "react-router"
+import { Link, useNavigate } from "react-router"
 import { Logo } from "./Logo"
 import GridDots from "@/assets/grid_dots.svg?react"
 import Exit from "@/assets/exit.svg?react"
@@ -6,18 +6,32 @@ import { useEffect, useState } from "react"
 import { Overlay } from "./Overlay"
 import { navigationVM } from "."
 import { useLocation } from "react-router"
+import { useUserStore } from "@/stores/userStore"
+import UserActions from "./UserActions"
 
 export function Navbar() {
+  const navigate = useNavigate()
   const location = useLocation()
 
   const [isOverlayOpen, setIsOverlayOpen] = useState(false)
 
+  const { user, appError, initUser, logout, redirectToLogin } = useUserStore()
+
   useEffect(() => {
     setIsOverlayOpen(false)
-  }, [location.pathname])
+    initUser(location.pathname)
+  }, [location.pathname, initUser])
 
   const toogleOverlay = () => {
     setIsOverlayOpen(!isOverlayOpen)
+  }
+
+  if (appError) {
+    switch (appError.type) {
+      default:
+        navigate("/500", { state: { status: 500 }, replace: true })
+        break
+    }
   }
 
   return (
@@ -47,9 +61,29 @@ export function Navbar() {
               ))}
             </div>
 
-            <button className="navbar__login btn btn--filled">
-              Get started
-            </button>
+            {user ? (
+              <div className="navbar__user">
+                <img
+                  className="navbar__user-avatar"
+                  src={`data:image/png;base64,${user.avatar}`}
+                  alt="avatar"
+                />
+                <div className="navbar__user-tooltip">
+                  <UserActions
+                    user={user}
+                    logout={logout}
+                    redirectToLogin={redirectToLogin}
+                  />
+                </div>
+              </div>
+            ) : (
+              <button
+                className="navbar__login btn btn--filled"
+                onClick={redirectToLogin}
+              >
+                Get started
+              </button>
+            )}
           </div>
         </div>
       </nav>
@@ -63,9 +97,9 @@ export function Navbar() {
             <Exit className="text-gray-500" />
           </button>
 
-          <Logo></Logo>
+          <Logo />
 
-          <div className="overlay__section py-(--space-md)">
+          <div className="overlay__section">
             {navigationVM.map((n, i) => (
               <Link
                 key={i}
@@ -76,6 +110,14 @@ export function Navbar() {
                 <n.icon /> {n.label}
               </Link>
             ))}
+          </div>
+          <hr />
+          <div className="overlay__section">
+            <UserActions
+              user={user}
+              logout={logout}
+              redirectToLogin={redirectToLogin}
+            />
           </div>
         </div>
       </Overlay>

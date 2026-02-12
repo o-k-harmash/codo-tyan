@@ -12,6 +12,7 @@ import Article from "./pages/Article"
 import About from "./pages/About"
 import SupportAndCommunity from "./pages/SupportAndCommunity"
 import Exception from "./pages/Exception"
+import Settings from "./pages/Settings"
 
 const router = createBrowserRouter([
   {
@@ -36,6 +37,10 @@ const router = createBrowserRouter([
       {
         path: "/articles/:articleId",
         element: <Article />,
+      },
+      {
+        path: "/settings",
+        element: <Settings />,
       },
     ],
   },
