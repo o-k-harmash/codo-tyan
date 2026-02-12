@@ -1,0 +1,1 @@
+public record MeDto(string userId, string? email, string? firstName, string? lastName, string? userName, string? avatarBase64);

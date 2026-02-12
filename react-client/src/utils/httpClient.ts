@@ -27,6 +27,7 @@ function httpClient({
     },
     ...options,
     ...(body ? { body: JSON.stringify(body) } : {}),
+    credentials: "include",
   }
 
   let uri = ""

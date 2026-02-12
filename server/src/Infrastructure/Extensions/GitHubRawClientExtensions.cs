@@ -1,4 +1,4 @@
-public static class GitHubClientExtensions
+public static class GitHubRawClientExtensions
 {
     public static IServiceCollection AddGitHubRawClient(
         this IServiceCollection services,

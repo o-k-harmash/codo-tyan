@@ -68,6 +68,13 @@
     line-height: var(--text-sm--line-height);
   }
 
+  hr {
+    border: none;
+    height: 2px;
+    background: var(--bg-secondary);
+    margin-block: var(--space-lg);
+  }
+
   main {
     min-height: 100vh;
   }
@@ -77,10 +84,8 @@
   }
 
   svg {
-    height: 100%;
-    width: 100%;
-    max-width: 24px;
-    max-height: 24px;
+    width: 24px;
+    height: 24px;
     box-sizing: content-box;
   }
 
@@ -213,9 +218,10 @@
   }
 
   .overlay__section {
+    margin-top: var(--space-md);
     display: flex;
     flex-direction: column;
-    gap: var(--spacing)
+    gap: var(--spacing);
   }
 
   .nav__item {
@@ -644,7 +650,7 @@
     max-height: 0;
     opacity: 0;
     transform: translateY(-0.25rem);
-    overflow-y: auto;
+    overflow-y: hidden;
     scrollbar-gutter: stable;
     scrollbar-width: thin;
     scrollbar-color: var(--color-gray-300) transparent;
@@ -654,8 +660,12 @@
       transform 200ms ease;
   }
 
+  .browser__details:hover {
+    overflow-y: auto;
+  }
+
   .browser__filters[open] .browser__details {
-    max-height: 12.5rem;
+    max-height: 100vh;
     opacity: 1;
     transform: translateY(0);
   }
@@ -696,11 +706,15 @@
       flex-wrap: wrap;
       gap: var(--space-sm);
       flex: 0 1 284px;
-      max-height: 24.5rem;
-      overflow-y: auto;
+      max-height: 100vh;
+      overflow-y: hidden;
       scrollbar-gutter: stable;
       scrollbar-width: thin;
       scrollbar-color: var(--color-gray-300) transparent;
+    }
+
+    .browser__filters-desktop:hover {
+      overflow-y: auto;
     }
 
     .browser__filters {
@@ -744,6 +758,61 @@
   .navbar__link:hover {
     border-bottom: 2px solid var(--color-gray-300);
     color: var(--color-gray-900);
+  }
+
+  .navbar__user {
+    position: relative;
+    cursor: pointer;
+    max-width: 40px;
+    max-height: 40px;
+  }
+
+  .navbar__user-avatar {
+    border-radius: 100%;
+  }
+
+  .navbar__user-tooltip {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--color-gray-300);
+    position: absolute;
+    top: 120%; /* чуть ниже аватара */
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--bg-primary);
+    padding: var(--space-sm);
+    border-radius: 4px;
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s ease;
+  }
+
+  .navbar__user:hover .navbar__user-tooltip {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .navbar__user-tooltip::after {
+    content: "";
+    position: absolute;
+    top: -20%;
+    left: 50%;
+    transform: translateX(-50%);
+    border-width: 10px;
+    border-style: solid;
+    border-color: transparent transparent var(--bg-primary) transparent;
+  }
+
+  .navbar__user-tooltip::before {
+    content: "";
+    position: absolute;
+    top: -23%;
+    left: 50%;
+    transform: translateX(-50%);
+    border-width: 11px;
+    border-style: solid;
+    border-color: transparent transparent var(--color-gray-300) transparent;
   }
 
   .navbar__login {
