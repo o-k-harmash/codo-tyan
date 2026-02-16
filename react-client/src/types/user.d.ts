@@ -4,5 +4,5 @@ export interface User {
   firstName: string
   lastName: string
   userName: string
-  avatar: string
+  avatarBase64: string
 }

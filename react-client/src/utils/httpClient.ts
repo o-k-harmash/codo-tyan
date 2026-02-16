@@ -33,7 +33,7 @@ function httpClient({
   let uri = ""
 
   if (prefix) {
-    uri += prefix + "/"
+    uri += prefix
   }
 
   uri += url

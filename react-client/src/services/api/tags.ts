@@ -3,7 +3,7 @@ import { apiService, handleError } from "."
 
 export async function apiGetTags(): Promise<string[]> {
   try {
-    const res = await apiService.get("tags")
+    const res = await apiService.get("/tags")
 
     if (!res.ok) {
       throw errors.serverError(res.status)

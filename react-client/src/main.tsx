@@ -9,8 +9,6 @@ import { Navbar } from "./components/Navbar"
 import { Join } from "./components/Join"
 import { Footer } from "./components/Footer"
 import Article from "./pages/Article"
-import About from "./pages/About"
-import SupportAndCommunity from "./pages/SupportAndCommunity"
 import Exception from "./pages/Exception"
 import Settings from "./pages/Settings"
 
@@ -31,9 +29,6 @@ const router = createBrowserRouter([
         path: "/",
         element: <Home />,
       },
-      { path: "/about", element: <About /> },
-      { path: "/support", element: <SupportAndCommunity /> },
-      { path: "/community", element: <SupportAndCommunity /> },
       {
         path: "/articles/:articleId",
         element: <Article />,

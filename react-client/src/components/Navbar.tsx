@@ -2,35 +2,43 @@ import { Link, useNavigate } from "react-router"
 import { Logo } from "./Logo"
 import GridDots from "@/assets/grid_dots.svg?react"
 import Exit from "@/assets/exit.svg?react"
-import { useEffect, useState } from "react"
+import { useEffect, useReducer, useState } from "react"
 import { Overlay } from "./Overlay"
 import { navigationVM } from "."
 import { useLocation } from "react-router"
 import { useUserStore } from "@/stores/userStore"
 import UserActions from "./UserActions"
+import type { AppError } from "@/utils/appError"
+
+const TOOGLE_OVERLAY = (state: boolean) => {
+  return !state
+}
 
 export function Navbar() {
   const navigate = useNavigate()
   const location = useLocation()
 
-  const [isOverlayOpen, setIsOverlayOpen] = useState(false)
-
-  const { user, appError, initUser, logout, redirectToLogin } = useUserStore()
+  const [isOverlayOpen, setIsOverlayOpen] = useReducer(TOOGLE_OVERLAY, false)
+  const [error, setError] = useState<AppError | null>()
+  const { user, initUser, logout, redirectToLogin } = useUserStore()
 
   useEffect(() => {
-    setIsOverlayOpen(false)
-    initUser(location.pathname)
-  }, [location.pathname, initUser])
+    async function init() {
+      try {
+        initUser()
+      } catch (error) {
+        setError(error as AppError)
+      }
+    }
+    init()
+  }, [initUser])
 
-  const toogleOverlay = () => {
-    setIsOverlayOpen(!isOverlayOpen)
-  }
-
-  if (appError) {
-    switch (appError.type) {
+  if (error) {
+    switch (error.type) {
+      case "UNAUTHORIZED":
+        break
       default:
         navigate("/500", { state: { status: 500 }, replace: true })
-        break
     }
   }
 
@@ -42,7 +50,7 @@ export function Navbar() {
 
           <button
             className="navbar__burger btn btn--ghost"
-            onClick={toogleOverlay}
+            onClick={setIsOverlayOpen}
           >
             <GridDots />
           </button>
@@ -65,7 +73,7 @@ export function Navbar() {
               <div className="navbar__user">
                 <img
                   className="navbar__user-avatar"
-                  src={`data:image/png;base64,${user.avatar}`}
+                  src={`data:image/png;base64,${user.avatarBase64}`}
                   alt="avatar"
                 />
                 <div className="navbar__user-tooltip">
@@ -92,7 +100,7 @@ export function Navbar() {
         <div className="overlay__panel">
           <button
             className="btn btn--ghost absolute left-full"
-            onClick={toogleOverlay}
+            onClick={setIsOverlayOpen}
           >
             <Exit className="text-gray-500" />
           </button>
