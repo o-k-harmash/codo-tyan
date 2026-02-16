@@ -138,7 +138,7 @@ public class UserController : Controller
 
     [HttpPost]
     [Authorize(AuthenticationSchemes = "JwtBearer")]
-    public async Task<IActionResult> UpdateUser([FromBody] UpdateUserDto dto)
+    public async Task<IActionResult> UpdateUser([FromForm] UpdateUserDto dto)
     {
         var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         if (string.IsNullOrEmpty(userId))

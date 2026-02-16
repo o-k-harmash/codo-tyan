@@ -19,15 +19,21 @@ function httpClient({
   options?: RequestInit
   stringify?: IStringifyOptions<BooleanOptional>
 }): Promise<Response> {
+  const isFormData = body instanceof FormData
+
   const fetchOptions: RequestInit = {
     method,
+    credentials: "include",
+    ...options,
     headers: {
-      "Content-Type": "application/json",
+      ...(isFormData ? {} : { "Content-Type": "application/json" }),
       ...headers,
     },
-    ...options,
-    ...(body ? { body: JSON.stringify(body) } : {}),
-    credentials: "include",
+    ...(body
+      ? {
+          body: isFormData ? body : JSON.stringify(body),
+        }
+      : {}),
   }
 
   let uri = ""

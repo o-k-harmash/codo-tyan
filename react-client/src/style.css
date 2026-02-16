@@ -842,12 +842,13 @@
   .navbar__user {
     position: relative;
     cursor: pointer;
-    max-width: 40px;
-    max-height: 40px;
   }
 
   .navbar__user-avatar {
     border-radius: 100%;
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
   }
 
   .navbar__user-tooltip {

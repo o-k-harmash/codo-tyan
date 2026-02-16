@@ -28,13 +28,18 @@ export async function apiUpdateUser(
   userAvatar: File | null,
 ) {
   try {
-    const res = await apiService.post("/user", {
-      userName,
-      email,
-      firstName,
-      lastName,
-      userAvatar,
-    })
+    const formData = new FormData()
+
+    formData.append("userName", userName)
+    formData.append("email", email)
+    formData.append("firstName", firstName)
+    formData.append("lastName", lastName)
+
+    if (userAvatar) {
+      formData.append("userAvatar", userAvatar)
+    }
+
+    const res = await apiService.post("/user", formData)
 
     if (!res.ok) {
       if (res.status === 422) {
