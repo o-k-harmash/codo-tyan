@@ -13,12 +13,8 @@ export async function apiGetArticles(
       limit: articlesPageLimit,
       tags: Array.from(tags),
     }
-    /**
-     * TODO: possible to add different validation for complex api contracts for example handle different statuses but
-     * it is include return status to the ui and handle it for user
-     * example of different reasones see: https://web.dev/articles/fetch-api-error-handling?hl=ru#when_the_network_status_code_represents_an_error
-     */
-    const res = await apiService.get("articles/list", params)
+
+    const res = await apiService.get("/articles/list", params)
 
     if (!res.ok) {
       throw errors.serverError(res.status)
@@ -36,7 +32,7 @@ export async function apiGetArticle(
   articleId: string,
 ): Promise<ArticleResponse> {
   try {
-    const res = await apiService.get(`articles/${articleId}`)
+    const res = await apiService.get(`/articles/${articleId}`)
 
     if (!res.ok) {
       if (res.status === 404) {

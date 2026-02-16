@@ -135,4 +135,66 @@ public class UserController : Controller
 
         return Ok(new MeDto(user.Id, user.Email, user.FirstName, user.LastName, user.UserName, Convert.ToBase64String(user.Avatar)));
     }
+
+    [HttpPost]
+    [Authorize(AuthenticationSchemes = "JwtBearer")]
+    public async Task<IActionResult> UpdateUser([FromForm] UpdateUserDto dto)
+    {
+        var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        if (string.IsNullOrEmpty(userId))
+        {
+            return Unauthorized();
+        }
+
+        var user = await _userManager.FindByIdAsync(userId);
+        if (user == null)
+        {
+            return NotFound();
+        }
+
+        if (!string.IsNullOrWhiteSpace(dto.UserName) && dto.UserName != user.UserName)
+        {
+            var existing = await _userManager.FindByNameAsync(dto.UserName);
+            if (existing != null && existing.Id != user.Id)
+            {
+                return UnprocessableEntity(new { userName = "Username is already taken" });
+            }
+        }
+
+        if (!string.IsNullOrWhiteSpace(dto.Email) && dto.Email != user.Email)
+        {
+            var existing = await _userManager.FindByEmailAsync(dto.Email);
+            if (existing != null && existing.Id != user.Id)
+            {
+                return UnprocessableEntity(new { email = "Email is already taken" });
+            }
+        }
+
+        user.UserName = dto.UserName ?? user.UserName;
+        user.Email = dto.Email ?? user.Email;
+        user.FirstName = dto.FirstName ?? user.FirstName;
+        user.LastName = dto.LastName ?? user.LastName;
+
+        if (dto.UserAvatar != null)
+        {
+            using var ms = new MemoryStream();
+            await dto.UserAvatar.CopyToAsync(ms);
+            user.Avatar = ms.ToArray();
+        }
+
+        var result = await _userManager.UpdateAsync(user);
+
+        if (!result.Succeeded)
+        {
+            var errors = result.Errors
+                .GroupBy(e => e.Code)
+                .ToDictionary(
+                    g => g.Key.ToLower(), 
+                    g => string.Join(", ", g.Select(e => e.Description))
+                );
+            return UnprocessableEntity(errors);
+        }
+
+        return Ok(new MeDto(user.Id, user.Email, user.FirstName, user.LastName, user.UserName, Convert.ToBase64String(user.Avatar)));
+    }
 }
