@@ -22,7 +22,7 @@ export default function Home() {
 
   const [articles, setArticles] = useState<ArticlePreview[] | null>(null)
   const [totalPages, setTotalPages] = useState(0)
-  const [articlesPageLimit] = useState(15)
+  const [articlesPageLimit] = useState(10)
   const [page, setPage] = useState(1)
   const [selectedTags, setSelectedTags] = useReducer(
     TOOGLE_TAG,
@@ -31,16 +31,6 @@ export default function Home() {
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<AppError | null>()
 
-  /**
-   * TODO: AbortController implementation, maby consider tags change debounce
-   *
-   * Issue: If a user changes filters/pages quickly, previous requests aren't cancelled,
-   * leading to potential race conditions and unnecessary network usage.
-   * Recommendation: Use AbortController to cancel in-flight requests.
-   *
-   * Issue: When tags change, the API is called immediately. If a user clicks multiple tags quickly, multiple requests are fired.
-   * Recommendation: Add debouncing for tag changes (not page changes, as those should be immediate).
-   */
   useEffect(() => {
     async function getArticles() {
       setIsLoading(true)
@@ -63,7 +53,7 @@ export default function Home() {
 
   useLayoutEffect(() => {
     window.scrollTo(0, 0)
-  }, [page])
+  }, [selectedTags, page, articlesPageLimit])
 
   if (error) {
     switch (error.type) {

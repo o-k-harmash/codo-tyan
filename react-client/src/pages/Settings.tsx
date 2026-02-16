@@ -1,7 +1,109 @@
 import { useUserStore } from "@/stores/userStore"
+import { useEffect, useReducer, useRef, useState } from "react"
+import { AppError } from "@/utils/appError"
+import { useNavigate } from "react-router"
+
+interface SettingsState {
+  email: string
+  firstName: string
+  lastName: string
+  userName: string
+  userAvatar: File | null
+}
+
+const SET_SETTINGS = (
+  state: SettingsState,
+  e: React.ChangeEvent<HTMLInputElement>,
+) => {
+  const { name, value } = e.target
+
+  if (name === "userAvatar") {
+    return { ...state, userAvatar: e.target.files?.[0] as File }
+  }
+
+  return { ...state, [name]: value }
+}
 
 export default function Settings() {
-  const { user } = useUserStore()
+  const navigate = useNavigate()
+
+  const { user, updateUser, redirectToLogin } = useUserStore()
+  const formRef = useRef<HTMLFormElement>(null)
+
+  const [settings, setSettings] = useReducer(SET_SETTINGS, {
+    email: user?.email ?? "",
+    firstName: user?.firstName ?? "",
+    lastName: user?.lastName ?? "",
+    userName: user?.userName ?? "",
+    userAvatar: null,
+  })
+
+  const [avatarBase64, setAvatarBase64] = useState(user?.avatarBase64)
+  const [error, setError] = useState<AppError | null>()
+  const [formErrors, setFormErrors] = useState<Record<string, string>>({})
+
+  useEffect(() => {
+    const file = settings.userAvatar
+    if (!file) {
+      setAvatarBase64(user?.avatarBase64)
+      return
+    }
+
+    const reader = new FileReader()
+    reader.onloadend = () => {
+      const result = reader.result as string
+      const base64 = result.split(",")[1]
+      setAvatarBase64(base64)
+    }
+    reader.readAsDataURL(file)
+  }, [user, settings.userAvatar])
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+
+    const form = formRef.current
+    if (!form) {
+      return
+    }
+
+    if (form.checkValidity()) {
+      const { userName, userAvatar, firstName, lastName, email } = settings
+      try {
+        await updateUser(userName, email, firstName, lastName, userAvatar)
+      } catch (error) {
+        setError(error as AppError)
+      }
+
+      return
+    }
+
+    const newErrors: Record<string, string> = {}
+
+    Array.from(form.elements).forEach((el) => {
+      const input = el as HTMLInputElement
+      if (!input.name || !input.willValidate) {
+        return
+      }
+
+      if (!input.validity.valid) {
+        newErrors[input.name] = input.validationMessage
+      }
+    })
+
+    setFormErrors(newErrors)
+  }
+
+  if (error) {
+    switch (error.type) {
+      case "VALIDATION":
+        break
+      case "UNAUTHORIZED":
+        redirectToLogin()
+        break
+      default:
+        navigate("/500", { state: { status: 500 }, replace: true })
+    }
+  }
 
   if (!user) {
     return (
@@ -12,10 +114,15 @@ export default function Settings() {
   }
 
   return (
-    <div className="max-w-xl mx-auto p-6">
-      <h1 className="text-2xl font-semibold mb-6">Profile Settings</h1>
+    <div className="profile">
+      <h1>Profile Settings</h1>
 
-      <form className="space-y-4">
+      <form
+        ref={formRef}
+        className="profile__settings"
+        noValidate
+        onSubmit={handleSubmit}
+      >
         <div>
           <label
             htmlFor="userId"
@@ -25,11 +132,11 @@ export default function Settings() {
           </label>
           <input
             id="userId"
+            name="userId"
             type="text"
             value={user.userId}
             readOnly
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm
-              bg-gray-100 text-gray-600"
+            onChange={setSettings}
           />
         </div>
 
@@ -42,14 +149,19 @@ export default function Settings() {
           </label>
           <input
             id="email"
+            name="email"
             type="email"
+            required
             defaultValue={user.email}
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm
-              focus:border-indigo-500 focus:ring-indigo-500"
+            onChange={setSettings}
+            data-error={!!formErrors.email}
           />
+          {formErrors.email && (
+            <span className="profile__error">{formErrors.email}</span>
+          )}
         </div>
 
-        <div className="grid grid-cols-2 gap-4">
+        <fieldset className="grid grid-cols-2 gap-4">
           <div>
             <label
               htmlFor="firstName"
@@ -59,11 +171,16 @@ export default function Settings() {
             </label>
             <input
               id="firstName"
+              name="firstName"
               type="text"
+              required
               defaultValue={user.firstName}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm
-                focus:border-indigo-500 focus:ring-indigo-500"
+              onChange={setSettings}
+              data-error={!!formErrors.firstName}
             />
+            {formErrors.firstName && (
+              <span className="profile__error">{formErrors.firstName}</span>
+            )}
           </div>
 
           <div>
@@ -75,13 +192,18 @@ export default function Settings() {
             </label>
             <input
               id="lastName"
+              name="lastName"
               type="text"
+              required
               defaultValue={user.lastName}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm
-                focus:border-indigo-500 focus:ring-indigo-500"
+              onChange={setSettings}
+              data-error={!!formErrors.lastName}
             />
+            {formErrors.lastName && (
+              <span className="profile__error">{formErrors.lastName}</span>
+            )}
           </div>
-        </div>
+        </fieldset>
 
         <div>
           <label
@@ -92,30 +214,42 @@ export default function Settings() {
           </label>
           <input
             id="userName"
+            name="userName"
             type="text"
+            required
             defaultValue={user.userName}
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm
-              focus:border-indigo-500 focus:ring-indigo-500"
+            onChange={setSettings}
+            data-error={!!formErrors.userName}
           />
+          {formErrors.userName && (
+            <span className="profile__error">{formErrors.userName}</span>
+          )}
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700">
+          <label
+            htmlFor="userAvatar"
+            className="profile__avatar block text-sm font-medium text-gray-700"
+          >
             Avatar
+            <img
+              src={`data:image/png;base64,${avatarBase64}`}
+              alt="avatar"
+              className="mt-2 h-20 w-20 rounded-full border border-gray-300
+                object-cover"
+            />
           </label>
-          <img
-            src={`data:image/png;base64,${user.avatar}`}
-            alt="avatar"
-            className="mt-2 h-20 w-20 rounded-full border border-gray-300
-              object-cover"
+          <input
+            id="userAvatar"
+            name="userAvatar"
+            className="profile__avatar-input"
+            required={avatarBase64 ? false : true}
+            type="file"
+            onChange={setSettings}
           />
         </div>
 
-        <button
-          type="submit"
-          className="w-full py-2 px-4 bg-indigo-600 text-white rounded-md shadow
-            hover:bg-indigo-700 transition"
-        >
+        <button type="submit" className="profile__submit btn btn--filled">
           Save changes
         </button>
       </form>

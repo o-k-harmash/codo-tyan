@@ -68,6 +68,46 @@
     line-height: var(--text-sm--line-height);
   }
 
+ input {
+    /* Базовая стилизация */
+    border: 1px solid var(--color-gray-300);
+    color: var(--fg-primary);
+    border-radius: 4px;
+    width: 100%;
+    padding: var(--space-sm);
+    background: var(--bg-primary);
+    line-height: 1.25;
+    outline: none;
+
+    /* Сброс нативных стилей */
+    box-shadow: none;
+    appearance: none;
+  }
+
+  input:hover,
+  input:focus,
+  input:active {
+    border-color: var(--color-gray-400); /* можно оставить легкий hover/focus */
+    background: var(--bg-primary);
+    box-shadow: none;
+  }
+
+  input:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+  input:invalid {
+    /* Сброс стандартного браузерного красного бордера */
+    box-shadow: none;
+    outline: none;
+  }
+
+  /* Валидация через data-error */
+  input[data-error="true"] {
+    border-color: var(--color-pink-500);
+  }
+
   hr {
     border: none;
     height: 2px;
@@ -84,8 +124,10 @@
   }
 
   svg {
-    width: 24px;
-    height: 24px;
+    max-width: 24px;
+    max-height: 24px;
+    width: 100%;
+    height: 100%;
     box-sizing: content-box;
   }
 
@@ -246,6 +288,7 @@
 
   .nav__item-svg,
   .nav__item svg {
+    flex: 0 0 24px;
     color: var(--color-gray-400);
   }
 
@@ -413,16 +456,8 @@
   /* ==============================
    Code blocks
    ============================== */
-
-  .prose pre {
-    overflow: hidden;
-  }
-
   .prose pre code {
     font-family: GoogleSansCode;
-    display: block;
-    padding: var(--space-md);
-    overflow: auto hidden;
     font-size: 0.8em;
     border-radius: 0;
     line-height: 1.6;
@@ -553,6 +588,7 @@
     */
 
   .browser {
+    position: relative;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -672,6 +708,16 @@
 
   .browser__filters-desktop {
     display: none;
+    height: fit-content;
+    gap: var(--space-sm);
+    flex: 0 1 284px;
+    max-height: 100vh;
+    overflow-y: hidden;
+    scrollbar-gutter: stable;
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-gray-300) transparent;
+    position: sticky;
+    top: 0;
   }
 
   .browser__empty-state {
@@ -701,16 +747,8 @@
     }
 
     .browser__filters-desktop {
-      height: fit-content;
       display: flex;
       flex-wrap: wrap;
-      gap: var(--space-sm);
-      flex: 0 1 284px;
-      max-height: 100vh;
-      overflow-y: hidden;
-      scrollbar-gutter: stable;
-      scrollbar-width: thin;
-      scrollbar-color: var(--color-gray-300) transparent;
     }
 
     .browser__filters-desktop:hover {
@@ -724,11 +762,52 @@
 
   /** 
     * ============================= 
+    * PROFILE STYLES            
+    * ============================= 
+    */
+
+  .profile {
+    margin-inline: auto;
+    width: 100%;
+    max-width: 42rem;
+    padding-inline: 1rem;
+    margin-top: var(--space-lg);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+  }
+
+  .profile__settings {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+  }
+
+  .profile__submit {
+    width: 100%;
+  }
+
+  .profile__avatar-input {
+    display: none;
+  }
+
+  .profile__avatar {
+    cursor: pointer;
+    width: max-content;
+  }
+
+  .profile__error {
+    font-size: 12px;
+  }
+
+  /** 
+    * ============================= 
     * NAVBAR STYLES            
     * ============================= 
     */
 
   .navbar {
+    height: 56px;
     border-bottom: 1px solid var(--color-gray-300);
     padding-block: var(--space-sm);
   }
