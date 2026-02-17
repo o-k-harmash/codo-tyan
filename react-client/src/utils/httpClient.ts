@@ -1,6 +1,20 @@
 import qs, { type BooleanOptional, type IStringifyOptions } from "qs"
 
-function httpClient({
+export type Ok<T> = {
+  ok: true
+  status: number
+  data?: T
+}
+
+export type Err<E> = {
+  ok: false
+  status: number
+  error: E
+}
+
+export type HttpResult<T, E> = Ok<T> | Err<E>
+
+async function httpClient<T, E>({
   url,
   method,
   prefix,
@@ -14,66 +28,91 @@ function httpClient({
   prefix?: string
   method?: string
   params?: Record<string, unknown>
-  body?: unknown
+  body?: BodyInit
   headers?: Record<string, string>
   options?: RequestInit
   stringify?: IStringifyOptions<BooleanOptional>
-}): Promise<Response> {
-  const isFormData = body instanceof FormData
+}): Promise<HttpResult<T, E>> {
+  const query = params
+    ? `?${qs.stringify(params, {
+        skipNulls: true,
+        arrayFormat: "repeat",
+        ...stringify,
+      })}`
+    : ""
 
-  const fetchOptions: RequestInit = {
+  const response = await fetch(`${prefix ?? ""}${url}${query}`, {
     method,
+    headers,
+    body,
     credentials: "include",
     ...options,
-    headers: {
-      ...(isFormData ? {} : { "Content-Type": "application/json" }),
-      ...headers,
-    },
-    ...(body
-      ? {
-          body: isFormData ? body : JSON.stringify(body),
-        }
-      : {}),
+  })
+
+  let data: unknown = undefined
+
+  try {
+    data = await response.json()
+  } catch {
+    // ignore if no body
   }
 
-  let uri = ""
-
-  if (prefix) {
-    uri += prefix
-  }
-
-  uri += url
-
-  if (params) {
-    const stringifyOptions: IStringifyOptions<BooleanOptional> = {
-      skipNulls: true,
-      arrayFormat: "repeat",
-      ...stringify,
+  if (!response.ok) {
+    return {
+      ok: false,
+      status: response.status,
+      error: data as E,
     }
-
-    uri += "?" + qs.stringify(params, stringifyOptions)
   }
 
-  return fetch(uri, fetchOptions)
+  return {
+    ok: true,
+    status: response.status,
+    data: data as T,
+  }
 }
 
 export const http = {
   create(prefix: string) {
     return {
-      get(url: string, params?: Record<string, unknown>) {
-        return httpClient({ url, method: "GET", params, prefix })
+      get<T, E>(url: string, params?: Record<string, unknown>) {
+        return httpClient<T, E>({ url, method: "GET", params, prefix })
       },
-      post(url: string, body?: unknown) {
-        return httpClient({ url, method: "POST", body, prefix })
+
+      post<T, E>(url: string, body?: unknown) {
+        return httpClient<T, E>({
+          url,
+          method: "POST",
+          prefix,
+          body: body ? JSON.stringify(body) : undefined,
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
       },
-      put(url: string, body?: unknown) {
-        return httpClient({ url, method: "PUT", body, prefix })
+
+      postForm<T, E>(url: string, formData: FormData) {
+        return httpClient<T, E>({
+          url,
+          method: "POST",
+          prefix,
+          body: formData,
+          // ❗ НЕ ставим Content-Type
+        })
       },
-      patch(url: string, body?: unknown) {
-        return httpClient({ url, method: "PATCH", body, prefix })
+
+      put<T, E>(url: string, body?: unknown) {
+        return httpClient<T, E>({
+          url,
+          method: "PUT",
+          prefix,
+          body: body ? JSON.stringify(body) : undefined,
+          headers: { "Content-Type": "application/json" },
+        })
       },
-      delete(url: string) {
-        return httpClient({ url, method: "DELETE", prefix })
+
+      delete<T, E>(url: string) {
+        return httpClient<T, E>({ url, method: "DELETE", prefix })
       },
     }
   },

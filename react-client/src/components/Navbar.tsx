@@ -1,46 +1,41 @@
-import { Link, useNavigate } from "react-router"
+import { Link } from "react-router"
 import { Logo } from "./Logo"
 import GridDots from "@/assets/grid_dots.svg?react"
 import Exit from "@/assets/exit.svg?react"
-import { useEffect, useReducer, useState } from "react"
+import { useEffect, useReducer } from "react"
 import { Overlay } from "./Overlay"
 import { navigationVM } from "."
 import { useLocation } from "react-router"
 import { useUserStore } from "@/stores/userStore"
 import UserActions from "./UserActions"
-import type { AppError } from "@/utils/appError"
+import useApiError from "@/hooks/useApiError"
+import { apiGetMe, redirectToLogin } from "@/services/api/user"
 
 const TOOGLE_OVERLAY = (state: boolean) => {
   return !state
 }
 
 export function Navbar() {
-  const navigate = useNavigate()
   const location = useLocation()
 
   const [isOverlayOpen, setIsOverlayOpen] = useReducer(TOOGLE_OVERLAY, false)
-  const [error, setError] = useState<AppError | null>()
-  const { user, initUser, logout, redirectToLogin } = useUserStore()
+  const { setError } = useApiError()
+  const { user, setUser, logout } = useUserStore()
 
   useEffect(() => {
-    async function init() {
+    async function initUser() {
       try {
-        initUser()
-      } catch (error) {
-        setError(error as AppError)
+        const user = await apiGetMe()
+
+        if (user) {
+          setUser(user)
+        }
+      } catch (e) {
+        setError(e)
       }
     }
-    init()
-  }, [initUser])
-
-  if (error) {
-    switch (error.type) {
-      case "UNAUTHORIZED":
-        break
-      default:
-        navigate("/500", { state: { status: 500 }, replace: true })
-    }
-  }
+    initUser()
+  }, [setUser])
 
   return (
     <>

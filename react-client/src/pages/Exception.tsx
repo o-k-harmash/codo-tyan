@@ -12,14 +12,19 @@ const errorVM = {
     description:
       "The page you are looking for doesn’t exist or has been moved. Please check the URL or return to the homepage.",
   },
+  401: {
+    code: "401",
+    title: "Not authorized",
+    description:
+      "User credendials already expired or doesnt exists. Please login again.",
+  },
   actions: {
     primary: "Go home",
-    secondary: "Back",
   },
 }
 
 export interface ExceptionParams {
-  status: 404 | 500
+  status: 401 | 404 | 500
 }
 
 export default function Exception({ status }: ExceptionParams) {

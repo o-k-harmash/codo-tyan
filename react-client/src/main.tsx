@@ -44,6 +44,10 @@ const router = createBrowserRouter([
     element: <Exception status={500} />,
   },
   {
+    path: "/401",
+    element: <Exception status={401} />,
+  },
+  {
     path: "*",
     element: <Exception status={404} />,
   },

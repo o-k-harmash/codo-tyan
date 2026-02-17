@@ -1,11 +1,11 @@
 import { Pagination } from "@/components/Pagination"
 import { Spinner } from "@/components/Spinner"
 import { Tags } from "@/components/Tags"
+import useApiError from "@/hooks/useApiError"
 import { apiGetArticles } from "@/services/api/articles"
 import type { ArticlePreview } from "@/types/article"
-import type { AppError } from "@/utils/appError"
 import { useEffect, useLayoutEffect, useReducer, useState } from "react"
-import { Link, useNavigate } from "react-router"
+import { Link } from "react-router"
 
 const TOOGLE_TAG = (state: Set<string>, tag: string) => {
   const next = new Set(state)
@@ -18,8 +18,6 @@ const TOOGLE_TAG = (state: Set<string>, tag: string) => {
 }
 
 export default function Home() {
-  const navigate = useNavigate()
-
   const [articles, setArticles] = useState<ArticlePreview[] | null>(null)
   const [totalPages, setTotalPages] = useState(0)
   const [articlesPageLimit] = useState(10)
@@ -29,7 +27,7 @@ export default function Home() {
     new Set<string>(),
   )
   const [isLoading, setIsLoading] = useState(true)
-  const [error, setError] = useState<AppError | null>()
+  const { setError } = useApiError()
 
   useEffect(() => {
     async function getArticles() {
@@ -42,8 +40,8 @@ export default function Home() {
         )
         setArticles(articles)
         setTotalPages(totalPages)
-      } catch (error) {
-        setError(error as AppError)
+      } catch (e) {
+        setError(e)
       }
       setIsLoading(false)
     }
@@ -54,13 +52,6 @@ export default function Home() {
   useLayoutEffect(() => {
     window.scrollTo(0, 0)
   }, [selectedTags, page, articlesPageLimit])
-
-  if (error) {
-    switch (error.type) {
-      default:
-        navigate("/500", { state: { status: 500 }, replace: true })
-    }
-  }
 
   return !articles ? (
     <Spinner dataVisible={true}></Spinner>
