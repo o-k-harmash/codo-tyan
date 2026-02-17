@@ -1,9 +1,11 @@
 import { useUserStore } from "@/stores/userStore"
 import { useEffect, useReducer, useRef, useState } from "react"
-import { AppError } from "@/utils/appError"
+import { apiUpdateUser } from "@/services/api/user"
+import useApiError from "@/hooks/useApiError"
 import { useNavigate } from "react-router"
 
 interface SettingsState {
+  userId: string
   email: string
   firstName: string
   lastName: string
@@ -26,11 +28,11 @@ const SET_SETTINGS = (
 
 export default function Settings() {
   const navigate = useNavigate()
-
-  const { user, updateUser, redirectToLogin } = useUserStore()
+  const { user, setUser } = useUserStore()
   const formRef = useRef<HTMLFormElement>(null)
 
   const [settings, setSettings] = useReducer(SET_SETTINGS, {
+    userId: user?.userId ?? "",
     email: user?.email ?? "",
     firstName: user?.firstName ?? "",
     lastName: user?.lastName ?? "",
@@ -39,7 +41,8 @@ export default function Settings() {
   })
 
   const [avatarBase64, setAvatarBase64] = useState(user?.avatarBase64)
-  const [error, setError] = useState<AppError | null>()
+  const [success, setSuccess] = useState(false)
+  const { setError } = useApiError()
   const [formErrors, setFormErrors] = useState<Record<string, string>>({})
 
   useEffect(() => {
@@ -69,9 +72,22 @@ export default function Settings() {
     if (form.checkValidity()) {
       const { userName, userAvatar, firstName, lastName, email } = settings
       try {
-        await updateUser(userName, email, firstName, lastName, userAvatar)
-      } catch (error) {
-        setError(error as AppError)
+        const result = await apiUpdateUser(
+          userName,
+          email,
+          firstName,
+          lastName,
+          userAvatar,
+        )
+
+        if (result.ok) {
+          setUser(result.user)
+          setSuccess(true)
+        } else {
+          setFormErrors(result.errors)
+        }
+      } catch (e) {
+        setError(e)
       }
 
       return
@@ -93,24 +109,8 @@ export default function Settings() {
     setFormErrors(newErrors)
   }
 
-  if (error) {
-    switch (error.type) {
-      case "VALIDATION":
-        break
-      case "UNAUTHORIZED":
-        redirectToLogin()
-        break
-      default:
-        navigate("/500", { state: { status: 500 }, replace: true })
-    }
-  }
-
   if (!user) {
-    return (
-      <div className="flex items-center justify-center h-screen">
-        <p className="text-gray-500">Нет данных пользователя</p>
-      </div>
-    )
+    navigate("/", { replace: true })
   }
 
   return (
@@ -134,7 +134,7 @@ export default function Settings() {
             id="userId"
             name="userId"
             type="text"
-            value={user.userId}
+            value={settings.userId}
             readOnly
             onChange={setSettings}
           />
@@ -152,7 +152,7 @@ export default function Settings() {
             name="email"
             type="email"
             required
-            defaultValue={user.email}
+            defaultValue={settings.email}
             onChange={setSettings}
             data-error={!!formErrors.email}
           />
@@ -174,7 +174,7 @@ export default function Settings() {
               name="firstName"
               type="text"
               required
-              defaultValue={user.firstName}
+              defaultValue={settings.firstName}
               onChange={setSettings}
               data-error={!!formErrors.firstName}
             />
@@ -195,7 +195,7 @@ export default function Settings() {
               name="lastName"
               type="text"
               required
-              defaultValue={user.lastName}
+              defaultValue={settings.lastName}
               onChange={setSettings}
               data-error={!!formErrors.lastName}
             />
@@ -217,7 +217,7 @@ export default function Settings() {
             name="userName"
             type="text"
             required
-            defaultValue={user.userName}
+            defaultValue={settings.userName}
             onChange={setSettings}
             data-error={!!formErrors.userName}
           />
@@ -248,6 +248,10 @@ export default function Settings() {
             onChange={setSettings}
           />
         </div>
+
+        {success && (
+          <span className="profile__success">User updated success.</span>
+        )}
 
         <button type="submit" className="profile__submit btn btn--filled">
           Save changes

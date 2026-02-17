@@ -1,20 +1,11 @@
-import { BASE_URL } from "@/services/api"
-import { apiGetMe, apiLogout, apiUpdateUser } from "@/services/api/user"
+import { apiLogout } from "@/services/api/user"
 import type { User } from "@/types/user"
 import { create } from "zustand"
 
 interface UserState {
   user: User | null
-  initUser: () => Promise<void>
+  setUser: (user: User) => void
   logout: () => void
-  redirectToLogin: () => void
-  updateUser: (
-    userName: string,
-    email: string,
-    firstName: string,
-    lastName: string,
-    userAvatar: File | null,
-  ) => Promise<void>
 }
 
 function getUserFromStorage(): User | null {
@@ -30,45 +21,17 @@ function clearUserFromStorage() {
   localStorage.removeItem("user")
 }
 
-export const useUserStore = create<UserState>((set, get) => ({
+export const useUserStore = create<UserState>((set) => ({
   user: getUserFromStorage(),
-  appError: null,
 
-  redirectToLogin: () => {
-    window.location.href = `${BASE_URL}/user/login?returnUrl=${location.pathname}`
-  },
-
-  initUser: async () => {
-    if (get().user) {
-      return
-    }
-
-    const user = await apiGetMe()
-    setUserToStorage(user)
-    set({ user })
-  },
-
-  updateUser: async (
-    userName: string,
-    email: string,
-    firstName: string,
-    lastName: string,
-    userAvatar: File | null,
-  ) => {
-    const user = await apiUpdateUser(
-      userName,
-      email,
-      firstName,
-      lastName,
-      userAvatar,
-    )
+  setUser: (user: User) => {
     setUserToStorage(user)
     set({ user })
   },
 
   logout: async () => {
+    await apiLogout()
     clearUserFromStorage()
     set({ user: null })
-    await apiLogout()
   },
 }))

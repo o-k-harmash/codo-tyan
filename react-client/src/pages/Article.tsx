@@ -1,31 +1,30 @@
 import { Spinner } from "@/components/Spinner"
 import { apiGetArticle } from "@/services/api/articles"
-import type { ArticleResponse } from "@/types/response"
+import type { ArticleResult } from "@/types/result"
 import { useEffect, useLayoutEffect, useRef, useState } from "react"
-import { useNavigate, useParams } from "react-router"
+import { useParams } from "react-router"
 import hljs from "highlight.js"
-import type { AppError } from "@/utils/appError"
+import useApiError from "@/hooks/useApiError"
 
 type ArticleRouteParams = {
   articleId: string
 }
 
 export default function Article() {
-  const navigate = useNavigate()
   const { articleId } = useParams() as ArticleRouteParams
 
   const proseRef = useRef<HTMLDivElement | null>(null)
 
-  const [article, setArticle] = useState<ArticleResponse | null>()
-  const [error, setError] = useState<AppError | null>()
+  const [article, setArticle] = useState<ArticleResult | null>()
+  const { setError } = useApiError()
 
   useEffect(() => {
     async function getArticle() {
       try {
         const article = await apiGetArticle(articleId)
         setArticle(article)
-      } catch (error) {
-        setError(error as AppError)
+      } catch (e) {
+        setError(e)
       }
     }
 
@@ -43,16 +42,6 @@ export default function Article() {
       hljs.highlightElement(block)
     })
   }, [article])
-
-  if (error) {
-    switch (error.type) {
-      case "NOT_FOUND":
-        navigate("/404", { state: { status: 404 }, replace: true })
-        break
-      default:
-        navigate("/500", { state: { status: 500 }, replace: true })
-    }
-  }
 
   return !article ? (
     <Spinner dataVisible={true}></Spinner>

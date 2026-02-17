@@ -1,16 +1,28 @@
-import errors from "@/utils/appError"
-import { apiService, handleError } from "."
+import ApiError from "@/utils/apiError"
+import { apiService } from "."
 
 export async function apiGetTags(): Promise<string[]> {
   try {
-    const res = await apiService.get("/tags")
+    const res = await apiService.get<string[], unknown>("/tags")
 
     if (!res.ok) {
-      throw errors.serverError(res.status)
+      throw new ApiError({
+        message: "Failed to fetch tags",
+        status: res.status,
+      })
     }
 
-    return res.json()
-  } catch (error) {
-    throw handleError(error)
+    if (!res.data) {
+      throw new ApiError({
+        message: "Tags response is empty",
+        status: res.status,
+      })
+    }
+
+    return res.data
+  } catch (e) {
+    throw new ApiError({
+      ...(e as Error),
+    })
   }
 }
