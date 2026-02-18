@@ -2,25 +2,48 @@ import { Link } from "react-router"
 import { Logo } from "./Logo"
 import GridDots from "@/assets/grid_dots.svg?react"
 import Exit from "@/assets/exit.svg?react"
-import { useEffect, useReducer } from "react"
+import { useEffect, useLayoutEffect, useReducer } from "react"
 import { Overlay } from "./Overlay"
 import { navigationVM } from "."
 import { useLocation } from "react-router"
-import { useUserStore } from "@/stores/userStore"
 import UserActions from "./UserActions"
 import useApiError from "@/hooks/useApiError"
+import { useUserStore } from "@/stores/userStore"
 import { apiGetMe, redirectToLogin } from "@/services/api/user"
+import Sunny from "@/assets/sunny.svg?react"
+import Moon from "@/assets/moon.svg?react"
 
-const TOOGLE_OVERLAY = (state: boolean) => {
+function getInitialTheme(): boolean {
+  const stored = localStorage.getItem("darkTheme")
+  return stored ? JSON.parse(stored) : false
+}
+
+const TOOGLE_FLAG = (state: boolean) => {
   return !state
 }
 
 export function Navbar() {
   const location = useLocation()
 
-  const [isOverlayOpen, setIsOverlayOpen] = useReducer(TOOGLE_OVERLAY, false)
+  const [isOverlayOpen, setIsOverlayOpen] = useReducer(TOOGLE_FLAG, false)
   const { setError } = useApiError()
   const { user, setUser, logout } = useUserStore()
+  const [isDarkTheme, setIsDarkTheme] = useReducer(
+    TOOGLE_FLAG,
+    getInitialTheme(),
+  )
+
+  useLayoutEffect(() => {
+    const root = document.documentElement
+
+    if (isDarkTheme) {
+      root.classList.add("dark")
+    } else {
+      root.classList.remove("dark")
+    }
+
+    localStorage.setItem("darkTheme", JSON.stringify(isDarkTheme))
+  }, [isDarkTheme])
 
   useEffect(() => {
     async function initUser() {
@@ -34,6 +57,7 @@ export function Navbar() {
         setError(e)
       }
     }
+
     initUser()
   }, [setUser])
 
@@ -64,6 +88,10 @@ export function Navbar() {
               ))}
             </div>
 
+            <button className="navbar__theme" onClick={setIsDarkTheme}>
+              {isDarkTheme ? <Sunny /> : <Moon />}
+            </button>
+
             {user ? (
               <div className="navbar__user">
                 <img
@@ -72,11 +100,7 @@ export function Navbar() {
                   alt="avatar"
                 />
                 <div className="navbar__user-tooltip">
-                  <UserActions
-                    user={user}
-                    logout={logout}
-                    redirectToLogin={redirectToLogin}
-                  />
+                  <UserActions user={user} logout={logout} />
                 </div>
               </div>
             ) : (
@@ -116,11 +140,19 @@ export function Navbar() {
           </div>
           <hr />
           <div className="overlay__section">
-            <UserActions
-              user={user}
-              logout={logout}
-              redirectToLogin={redirectToLogin}
-            />
+            <button className="nav__item" onClick={setIsDarkTheme}>
+              {isDarkTheme ? (
+                <>
+                  <Sunny /> Light mode
+                </>
+              ) : (
+                <>
+                  <Moon /> Dark mode
+                </>
+              )}
+            </button>
+
+            <UserActions user={user} logout={logout} />
           </div>
         </div>
       </Overlay>

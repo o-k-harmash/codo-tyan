@@ -42,11 +42,11 @@ export function Footer() {
       <div className="footer__info">
         <div className="footer__brand">
           <Logo />
-          <p className="text-gray-600">{contacts.description}</p>
+          <p>{contacts.description}</p>
           <div className="flex gap-(--space-lg)">
             {contacts.links.map((l, k) => (
               <Link key={k} to={l.href}>
-                <l.icon className="text-gray-500" />
+                <l.icon />
               </Link>
             ))}
           </div>
@@ -59,9 +59,7 @@ export function Footer() {
               <ul className="mt-(--space-md) flex flex-col gap-(--space-md)">
                 {navigation[0].links.map((l, k) => (
                   <li key={k}>
-                    <Link to={l.href} className="text-gray-500">
-                      {l.label}
-                    </Link>
+                    <Link to={l.href}>{l.label}</Link>
                   </li>
                 ))}
               </ul>
@@ -71,9 +69,7 @@ export function Footer() {
               <ul className="mt-(--space-md) flex flex-col gap-(--space-md)">
                 {navigation[1].links.map((l, k) => (
                   <li key={k}>
-                    <Link to={l.href} className="text-gray-500">
-                      {l.label}
-                    </Link>
+                    <Link to={l.href}>{l.label}</Link>
                   </li>
                 ))}
               </ul>
@@ -85,9 +81,7 @@ export function Footer() {
               <ul className="mt-(--space-md) flex flex-col gap-(--space-md)">
                 {navigation[0].links.map((l, k) => (
                   <li key={k}>
-                    <Link to={l.href} className="text-gray-500">
-                      {l.label}
-                    </Link>
+                    <Link to={l.href}>{l.label}</Link>
                   </li>
                 ))}
               </ul>
@@ -97,9 +91,7 @@ export function Footer() {
               <ul className="mt-(--space-md) flex flex-col gap-(--space-md)">
                 {navigation[1].links.map((l, k) => (
                   <li key={k}>
-                    <Link to={l.href} className="text-gray-500">
-                      {l.label}
-                    </Link>
+                    <Link to={l.href}>{l.label}</Link>
                   </li>
                 ))}
               </ul>

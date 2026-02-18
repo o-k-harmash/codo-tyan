@@ -1,22 +1,33 @@
-import { Link } from "react-router"
+import { Link, useNavigate } from "react-router"
 import Comment from "@/assets/comment.svg?react"
 import Important from "@/assets/important.svg?react"
 import type { User } from "@/types/user"
+import { redirectToLogin } from "@/services/api/user"
 
 export default function UserActions({
   user,
   logout,
-  redirectToLogin,
 }: {
   user: User | null
   logout: () => void
-  redirectToLogin: () => void
 }) {
+  const navigate = useNavigate()
+
+  async function handleLogout() {
+    try {
+      await logout()
+    } finally {
+      navigate("/", { replace: true })
+    }
+  }
+
   if (!user) {
     return (
-      <button className="nav__item" onClick={redirectToLogin}>
-        <Comment /> Get started
-      </button>
+      <>
+        <button className="nav__item" onClick={redirectToLogin}>
+          <Comment /> Get started
+        </button>
+      </>
     )
   }
 
@@ -25,7 +36,7 @@ export default function UserActions({
       <Link className="nav__item" to="/settings">
         <Comment /> Settings
       </Link>
-      <button className="nav__item" onClick={logout}>
+      <button className="nav__item" onClick={handleLogout}>
         <Important /> Logout
       </button>
     </>
