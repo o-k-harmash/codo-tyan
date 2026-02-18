@@ -25,13 +25,16 @@ export default function useApiError() {
     }
 
     async function handleLogout() {
-      await logout()
+      try {
+        await logout()
+      } finally {
+        navigate("/401", { replace: true })
+      }
     }
 
     switch (error.status) {
       case 401:
         handleLogout()
-        navigate("/401", { replace: true })
         break
       case 404:
         navigate("/404", { replace: true })

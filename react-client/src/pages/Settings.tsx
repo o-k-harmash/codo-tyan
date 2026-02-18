@@ -2,7 +2,6 @@ import { useUserStore } from "@/stores/userStore"
 import { useEffect, useReducer, useRef, useState } from "react"
 import { apiUpdateUser } from "@/services/api/user"
 import useApiError from "@/hooks/useApiError"
-import { useNavigate } from "react-router"
 
 interface SettingsState {
   userId: string
@@ -27,7 +26,6 @@ const SET_SETTINGS = (
 }
 
 export default function Settings() {
-  const navigate = useNavigate()
   const { user, setUser } = useUserStore()
   const formRef = useRef<HTMLFormElement>(null)
 
@@ -109,154 +107,153 @@ export default function Settings() {
     setFormErrors(newErrors)
   }
 
-  if (!user) {
-    navigate("/", { replace: true })
-  }
-
   return (
-    <div className="profile">
-      <h1>Profile Settings</h1>
+    user && (
+      <div className="profile">
+        <h1>Profile Settings</h1>
 
-      <form
-        ref={formRef}
-        className="profile__settings"
-        noValidate
-        onSubmit={handleSubmit}
-      >
-        <div>
-          <label
-            htmlFor="userId"
-            className="block text-sm font-medium text-gray-700"
-          >
-            User ID
-          </label>
-          <input
-            id="userId"
-            name="userId"
-            type="text"
-            value={settings.userId}
-            readOnly
-            onChange={setSettings}
-          />
-        </div>
-
-        <div>
-          <label
-            htmlFor="email"
-            className="block text-sm font-medium text-gray-700"
-          >
-            Email
-          </label>
-          <input
-            id="email"
-            name="email"
-            type="email"
-            required
-            defaultValue={settings.email}
-            onChange={setSettings}
-            data-error={!!formErrors.email}
-          />
-          {formErrors.email && (
-            <span className="profile__error">{formErrors.email}</span>
-          )}
-        </div>
-
-        <fieldset className="grid grid-cols-2 gap-4">
+        <form
+          ref={formRef}
+          className="profile__settings"
+          noValidate
+          onSubmit={handleSubmit}
+        >
           <div>
             <label
-              htmlFor="firstName"
+              htmlFor="userId"
               className="block text-sm font-medium text-gray-700"
             >
-              First Name
+              User ID
             </label>
             <input
-              id="firstName"
-              name="firstName"
+              id="userId"
+              name="userId"
+              type="text"
+              value={settings.userId}
+              readOnly
+              onChange={setSettings}
+            />
+          </div>
+
+          <div>
+            <label
+              htmlFor="email"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Email
+            </label>
+            <input
+              id="email"
+              name="email"
+              type="email"
+              required
+              defaultValue={settings.email}
+              onChange={setSettings}
+              data-error={!!formErrors.email}
+            />
+            {formErrors.email && (
+              <span className="profile__error">{formErrors.email}</span>
+            )}
+          </div>
+
+          <fieldset className="grid grid-cols-2 gap-4">
+            <div>
+              <label
+                htmlFor="firstName"
+                className="block text-sm font-medium text-gray-700"
+              >
+                First Name
+              </label>
+              <input
+                id="firstName"
+                name="firstName"
+                type="text"
+                required
+                defaultValue={settings.firstName}
+                onChange={setSettings}
+                data-error={!!formErrors.firstName}
+              />
+              {formErrors.firstName && (
+                <span className="profile__error">{formErrors.firstName}</span>
+              )}
+            </div>
+
+            <div>
+              <label
+                htmlFor="lastName"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Last Name
+              </label>
+              <input
+                id="lastName"
+                name="lastName"
+                type="text"
+                required
+                defaultValue={settings.lastName}
+                onChange={setSettings}
+                data-error={!!formErrors.lastName}
+              />
+              {formErrors.lastName && (
+                <span className="profile__error">{formErrors.lastName}</span>
+              )}
+            </div>
+          </fieldset>
+
+          <div>
+            <label
+              htmlFor="userName"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Username
+            </label>
+            <input
+              id="userName"
+              name="userName"
               type="text"
               required
-              defaultValue={settings.firstName}
+              defaultValue={settings.userName}
               onChange={setSettings}
-              data-error={!!formErrors.firstName}
+              data-error={!!formErrors.userName}
             />
-            {formErrors.firstName && (
-              <span className="profile__error">{formErrors.firstName}</span>
+            {formErrors.userName && (
+              <span className="profile__error">{formErrors.userName}</span>
             )}
           </div>
 
           <div>
             <label
-              htmlFor="lastName"
-              className="block text-sm font-medium text-gray-700"
+              htmlFor="userAvatar"
+              className="profile__avatar block text-sm font-medium
+                text-gray-700"
             >
-              Last Name
+              Avatar
+              <img
+                src={`data:image/png;base64,${avatarBase64}`}
+                alt="avatar"
+                className="mt-2 h-20 w-20 rounded-full border border-gray-300
+                  object-cover"
+              />
             </label>
             <input
-              id="lastName"
-              name="lastName"
-              type="text"
-              required
-              defaultValue={settings.lastName}
+              id="userAvatar"
+              name="userAvatar"
+              className="profile__avatar-input"
+              required={avatarBase64 ? false : true}
+              type="file"
               onChange={setSettings}
-              data-error={!!formErrors.lastName}
             />
-            {formErrors.lastName && (
-              <span className="profile__error">{formErrors.lastName}</span>
-            )}
           </div>
-        </fieldset>
 
-        <div>
-          <label
-            htmlFor="userName"
-            className="block text-sm font-medium text-gray-700"
-          >
-            Username
-          </label>
-          <input
-            id="userName"
-            name="userName"
-            type="text"
-            required
-            defaultValue={settings.userName}
-            onChange={setSettings}
-            data-error={!!formErrors.userName}
-          />
-          {formErrors.userName && (
-            <span className="profile__error">{formErrors.userName}</span>
+          {success && (
+            <span className="profile__success">User updated success.</span>
           )}
-        </div>
 
-        <div>
-          <label
-            htmlFor="userAvatar"
-            className="profile__avatar block text-sm font-medium text-gray-700"
-          >
-            Avatar
-            <img
-              src={`data:image/png;base64,${avatarBase64}`}
-              alt="avatar"
-              className="mt-2 h-20 w-20 rounded-full border border-gray-300
-                object-cover"
-            />
-          </label>
-          <input
-            id="userAvatar"
-            name="userAvatar"
-            className="profile__avatar-input"
-            required={avatarBase64 ? false : true}
-            type="file"
-            onChange={setSettings}
-          />
-        </div>
-
-        {success && (
-          <span className="profile__success">User updated success.</span>
-        )}
-
-        <button type="submit" className="profile__submit btn btn--filled">
-          Save changes
-        </button>
-      </form>
-    </div>
+          <button type="submit" className="profile__submit btn btn--filled">
+            Save changes
+          </button>
+        </form>
+      </div>
+    )
   )
 }
