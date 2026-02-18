@@ -77,3 +77,7 @@ export async function apiGetArticle(
     })
   }
 }
+
+export default function redirectToEdit(slug: string) {
+  window.location.href = `https://github.com/o-k-harmash/codo-tyan-articles/blob/main/${slug}.md`
+}

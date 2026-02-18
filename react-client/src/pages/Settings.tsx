@@ -119,10 +119,7 @@ export default function Settings() {
           onSubmit={handleSubmit}
         >
           <div>
-            <label
-              htmlFor="userId"
-              className="block text-sm font-medium text-gray-700"
-            >
+            <label htmlFor="userId" className="profile__lable">
               User ID
             </label>
             <input
@@ -136,10 +133,7 @@ export default function Settings() {
           </div>
 
           <div>
-            <label
-              htmlFor="email"
-              className="block text-sm font-medium text-gray-700"
-            >
+            <label htmlFor="email" className="profile__lable">
               Email
             </label>
             <input
@@ -158,10 +152,7 @@ export default function Settings() {
 
           <fieldset className="grid grid-cols-2 gap-4">
             <div>
-              <label
-                htmlFor="firstName"
-                className="block text-sm font-medium text-gray-700"
-              >
+              <label htmlFor="firstName" className="profile__lable">
                 First Name
               </label>
               <input
@@ -179,10 +170,7 @@ export default function Settings() {
             </div>
 
             <div>
-              <label
-                htmlFor="lastName"
-                className="block text-sm font-medium text-gray-700"
-              >
+              <label htmlFor="lastName" className="profile__lable">
                 Last Name
               </label>
               <input
@@ -201,10 +189,7 @@ export default function Settings() {
           </fieldset>
 
           <div>
-            <label
-              htmlFor="userName"
-              className="block text-sm font-medium text-gray-700"
-            >
+            <label htmlFor="userName" className="profile__lable">
               Username
             </label>
             <input
@@ -224,8 +209,7 @@ export default function Settings() {
           <div>
             <label
               htmlFor="userAvatar"
-              className="profile__avatar block text-sm font-medium
-                text-gray-700"
+              className="profile__avatar profile__lable"
             >
               Avatar
               <img

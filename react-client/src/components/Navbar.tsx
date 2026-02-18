@@ -2,7 +2,7 @@ import { Link } from "react-router"
 import { Logo } from "./Logo"
 import GridDots from "@/assets/grid_dots.svg?react"
 import Exit from "@/assets/exit.svg?react"
-import { useEffect, useLayoutEffect, useReducer } from "react"
+import { useEffect, useLayoutEffect, useReducer, useState } from "react"
 import { Overlay } from "./Overlay"
 import { navigationVM } from "."
 import { useLocation } from "react-router"
@@ -25,13 +25,17 @@ const TOOGLE_FLAG = (state: boolean) => {
 export function Navbar() {
   const location = useLocation()
 
-  const [isOverlayOpen, setIsOverlayOpen] = useReducer(TOOGLE_FLAG, false)
+  const [isOverlayOpen, setIsOverlayOpen] = useState(false)
   const { setError } = useApiError()
   const { user, setUser, logout } = useUserStore()
   const [isDarkTheme, setIsDarkTheme] = useReducer(
     TOOGLE_FLAG,
     getInitialTheme(),
   )
+
+  useLayoutEffect(() => {
+    setIsOverlayOpen(false)
+  }, [location.pathname])
 
   useLayoutEffect(() => {
     const root = document.documentElement
@@ -69,7 +73,7 @@ export function Navbar() {
 
           <button
             className="navbar__burger btn btn--ghost"
-            onClick={setIsOverlayOpen}
+            onClick={() => setIsOverlayOpen(true)}
           >
             <GridDots />
           </button>
@@ -119,7 +123,7 @@ export function Navbar() {
         <div className="overlay__panel">
           <button
             className="btn btn--ghost absolute left-full"
-            onClick={setIsOverlayOpen}
+            onClick={() => setIsOverlayOpen(false)}
           >
             <Exit className="text-gray-500" />
           </button>
