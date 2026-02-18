@@ -322,6 +322,10 @@
   }
 
   .btn {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    flex-flow: row nowrap;
     width: max-content;
     height: max-content;
     cursor: pointer;
@@ -528,7 +532,7 @@
   }
 
   .prose table tbody tr:nth-child(2n) {
-    background-color: var(--color-gray-100);
+    background-color: var(--surface-hover);
   }
 
   .prose th,
@@ -541,7 +545,7 @@
 
   .prose th {
     font-weight: var(--font-weight-semibold);
-    background: var(--bg-secondary);
+    background: var(--surface-active);
   }
 
   .prose tr:nth-child(even) td {
@@ -588,20 +592,83 @@
   .article__prose {
     display: flex;
     flex-direction: column;
+    order: 2;
+    flex: 0 1 708px
   }
 
   /* Tailwind bug combine selector  .article__prose .c-container */
-  .article-container {
+  .article {
     margin-inline: auto;
     max-width: 384px;
     width: 100%;
     padding-inline: 1rem;
   }
 
+  .article__menu {
+    margin-top: var(--space-lg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-top: 1px solid var(--border-subtle);
+    padding-block: var(--space-md);
+  }
+
+  .article__content {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .article__aside {
+    margin-top: var(--space-lg);
+    display: flex;
+    flex-direction: column;
+    order: 1;
+    height: 100%;
+  }
+
+  .aside__title {
+    color: var(--fg-muted);
+    font-weight: 500;
+    margin-bottom: var(--space-md);
+  }
+
+  .article__item {
+    --item-border-color: var(--border-subtle);
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    border-left: 2px solid var(--item-border-color);
+  }
+
+  .article__item:hover {
+    --item-border-color: var(--color-orange-400)
+  }
+
+  .article__item:visited {
+    --item-border-color: var(--color-orange-400)
+  }
+
   @media (width >= 768px) {
-    .article-container {
-      max-width: 768px;
+    .article {
+      max-width: 1024px;
       padding-inline: 1.5rem;
+    }
+
+    .article__content {
+      flex-direction: row;
+      gap: calc(var(--space-lg) * 2);
+    }
+
+    .article__prose {
+      order: 1;
+    }
+
+    .article__aside {
+      flex: 0 0 max-content;
+      position: sticky;
+      top: var(--space-lg);
+      order: 2;
     }
   }
 
@@ -806,6 +873,12 @@
     gap: var(--space-lg);
   }
 
+  .profile__lable {
+    display: block;
+    font-weight: 500;
+    color: var(--fg-muted);
+  }
+
   .profile__submit {
     width: 100%;
   }
@@ -895,6 +968,7 @@
   }
 
   .navbar__user-tooltip {
+    z-index: 9999;
     position: absolute;
     top: 50%;
     left: -100%;

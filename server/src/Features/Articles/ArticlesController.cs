@@ -97,6 +97,7 @@ public class ArticlesController: ControllerBase
 
         var model = new ArticleDetailDto(
             article.Id.ToString(),
+            article.Slug,
             article.Title,
             html
         );

@@ -1,1 +1,1 @@
-public record ArticleDetailDto(string id, string title, string rawContent);
+public record ArticleDetailDto(string id, string slug, string title, string rawContent);
