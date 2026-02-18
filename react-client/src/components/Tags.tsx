@@ -1,6 +1,6 @@
 import Filter from "@/assets/filter.svg?react"
+import useApiError from "@/hooks/useApiError"
 import { apiGetTags } from "@/services/api/tags"
-import type { AppError } from "@/utils/appError"
 import { useEffect, useState } from "react"
 
 export type TagsProps = {
@@ -11,28 +11,21 @@ export type TagsProps = {
 
 export function Tags({ selectedTags, onClick, onLoading }: TagsProps) {
   const [tags, setTags] = useState<string[]>([])
-  const [error, setError] = useState<AppError | null>()
+  const { setError } = useApiError()
 
   useEffect(() => {
     async function getTags() {
       onLoading(true)
       try {
         setTags(await apiGetTags())
-      } catch (error) {
-        setError(error as AppError)
+      } catch (e) {
+        setError(e)
       }
       onLoading(false)
     }
 
     getTags()
   }, [onLoading])
-
-  if (error) {
-    switch (error.type) {
-      default:
-        throw error
-    }
-  }
 
   return (
     <>

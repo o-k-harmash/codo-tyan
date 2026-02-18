@@ -82,20 +82,22 @@ export default function Article() {
   ) : (
     <section className="article">
       <div className="article__content">
-        <div
-          ref={proseRef}
-          className="article__prose prose"
-          dangerouslySetInnerHTML={{ __html: article.rawContent }}
-        ></div>
+        <div className="article__main">
+          <div
+            ref={proseRef}
+            className="article__prose prose"
+            dangerouslySetInnerHTML={{ __html: article.rawContent }}
+          ></div>
+          <div className="article__menu">
+            <button
+              className="btn btn--iconic btn--outlined"
+              onClick={() => redirectToEdit(article.slug)}
+            >
+              <Phone /> Edit on GitHub
+            </button>
+          </div>
+        </div>
         <aside className="article__aside" ref={tableOfContentRef}></aside>
-      </div>
-      <div className="article__menu">
-        <button
-          className="btn btn--iconic btn--outlined"
-          onClick={() => redirectToEdit(article.slug)}
-        >
-          <Phone /> Edit on GitHub
-        </button>
       </div>
     </section>
   )
